@@ -1,7 +1,7 @@
-import * as HTMLCanvas from './htmlcanvas/index.js';
-import * as XMLSVG from './xmlsvg/index.js';
+import { HTMLCanvas } from './htmlcanvas/index.js';
+import { XMLSVG } from './xmlsvg/index.js';
 
-export default {
+export {
     HTMLCanvas,
     XMLSVG
 }

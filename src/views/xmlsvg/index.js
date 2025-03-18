@@ -5,13 +5,13 @@ import { svg_circle } from './svg-circle/index.js';
 import { svg_rect } from './svg-rect/index.js';
 import { svg_path } from './svg-path/index.js';
 
-export default class {
+export class XMLSVG {
 
     static Views = {
         Container: customElements.get(svg_container),
         Circle: customElements.get(svg_circle),
         Rect: customElements.get(svg_rect),
-        Line: customElements.get(svg_path),
+        Path: customElements.get(svg_path),
     }
 
     static Helpers = {

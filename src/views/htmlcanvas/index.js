@@ -4,7 +4,7 @@ import { layer_view } from './layer-view/index.js';
 import { grid_view } from './grid-view/index.js'
 import { degToRad, setAngle } from "./trigonometry";
 
-export default class {
+export class HTMLCanvas {
 
     /**
      * @typedef {Array} Iterable
