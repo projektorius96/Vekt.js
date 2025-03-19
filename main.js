@@ -1,5 +1,5 @@
 import { HTMLCanvas, XMLSVG } from './src/views/index.js';
-import init, { transformSVG } from './implementation/index.js';
+import initSVG, { transformSVG } from './implementation/index.js';
 
 document.addEventListener('DOMContentLoaded', ()=>{
 
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
         })
     );
 
-    const svgContainer = init(XMLSVG.Views);
+    const svgContainer = initSVG(XMLSVG.Views);
         document.body.children.stage?.add([
             new HTMLCanvas.ViewGroup.Layer({
                 name: 'grid'
@@ -50,7 +50,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
                     /* === SVGraphics === */
 
-                        if ( stage.grid ) transformSVG({XMLSVG, parent: svgContainer}) ;
+                        if ( stage.grid ) transformSVG({HTMLCanvas, XMLSVG, parent: svgContainer}) ;
     
                     /* === SVGraphics === */
                     

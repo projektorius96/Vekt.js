@@ -1,3 +1,5 @@
+import { setTransform } from "../src/views/htmlcanvas/trigonometry";
+
 export default (View) => {
     return (
         new View.Container({
@@ -41,7 +43,7 @@ export default (View) => {
     );
 }
 
-export const transformSVG = ({XMLSVG, parent}) =>{
+export const transformSVG = ({HTMLCanvas, XMLSVG, parent}) =>{
 
     const svgElement = XMLSVG.Helpers.findBy(parent.element.id);
     if ( svgElement ) {
@@ -89,11 +91,12 @@ export const transformSVG = ({XMLSVG, parent}) =>{
                         
                         const currentMatrix = (cursorFeedback) => {
 
-                            let matrix = new DOMMatrix();
-                            matrix.translateSelf((cursorFeedback?.x || Number(stage.grid.SVG.X_IN_MIDDLE)), (cursorFeedback?.y || Number(stage.grid.SVG.Y_IN_MIDDLE))); // Move the shape
-                            matrix.scaleSelf(stage.grid.GRIDCELL_DIM * 1 / Math.cos( Math.PI/4 ), stage.grid.GRIDCELL_DIM * 1 / Math.cos( Math.PI/4 ));
-                            matrix.rotateSelf(-45);
-
+                            const matrix = new DOMMatrix(
+                                HTMLCanvas.Helpers.Trigonometry.setTransform(-45, (cursorFeedback?.x || Number(stage.grid.SVG.X_IN_MIDDLE)), (cursorFeedback?.y || Number(stage.grid.SVG.Y_IN_MIDDLE)))
+                            );
+                            
+                            if (matrix) matrix.scaleSelf(stage.grid.GRIDCELL_DIM * ( 1 / Math.cos( Math.PI/4 ) ), stage.grid.GRIDCELL_DIM * ( 1 / Math.cos( Math.PI/4 ) ));
+                            
                             return matrix;
 
                         }
