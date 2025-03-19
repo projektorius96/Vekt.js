@@ -1,5 +1,3 @@
-import { setTransform } from "../src/views/htmlcanvas/trigonometry";
-
 export default (View) => {
     return (
         new View.Container({
