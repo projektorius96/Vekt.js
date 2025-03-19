@@ -2,7 +2,7 @@ import "./utils";
 import { stage_view } from './stage-view/index.js';
 import { layer_view } from './layer-view/index.js';
 import { grid_view } from './grid-view/index.js'
-import { degToRad, setAngle } from "./trigonometry";
+import { degToRad, radToDeg, setTransform } from "./trigonometry";
 
 export class HTMLCanvas {
 
@@ -30,9 +30,10 @@ export class HTMLCanvas {
         }
 
         /** 
-         * > This function expresson is a guard against end-user or developer, who know very little about canonical `Canvas API`
-         * @param {Number} num - odd number that is made even, or even number that is left out as is, i.e. even
-         * @returns makes sure the `GRIDCELL_DIM_RATIO` is always even, this makes sure shapes (views) are well centred in grid-first coordinate system
+         * > This function expression works as a guard against end-user or developer with limited knowledge of Canvas API
+         * 
+         * @param {Number} num - an "odd" number that is made to be "even", or even number that is left out as is, i.e. "even"
+         * @returns {Number} makes sure the modified `stage.grid.GRIDCELL_DIM` is always even, this makes sure the shapes (a.k.a. views) are well centred within a _"grid-first"_ coordinate system
         */
         static #evenNumber = (num = 0) => {
             const rounded = Math.ceil(num);
@@ -59,16 +60,17 @@ export class HTMLCanvas {
                 Y_IN_MIDDLE = ( ( divisorY * GRIDCELL_DIM  ) / 2 )
             ;
 
-            stage.grid = {
-                GRIDCELL_DIM,
-                X_IN_MIDDLE: X_IN_MIDDLE * window.devicePixelRatio, 
-                Y_IN_MIDDLE: Y_IN_MIDDLE * window.devicePixelRatio,
-            }
-
+            stage.grid = Object.create(null);
             Object.assign( stage.grid, {
+                GRIDCELL_DIM,
+                CANVAS: {
+                    X_IN_MIDDLE: X_IN_MIDDLE * window.devicePixelRatio, 
+                    Y_IN_MIDDLE: Y_IN_MIDDLE * window.devicePixelRatio
+                }
+                , 
                 SVG: {
-                    X_IN_MIDDLE: stage.grid.X_IN_MIDDLE / window.devicePixelRatio, 
-                    Y_IN_MIDDLE: stage.grid.Y_IN_MIDDLE / window.devicePixelRatio,
+                    X_IN_MIDDLE, 
+                    Y_IN_MIDDLE
                 }
             });
 
@@ -106,10 +108,11 @@ export class HTMLCanvas {
 
     static Helpers = {
         Trigonometry: {
-            setAngle
+            setTransform
             ,
             Converters: {
-                degToRad
+                degToRad,
+                radToDeg
             }
         }
     }

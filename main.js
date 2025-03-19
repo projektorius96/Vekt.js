@@ -1,5 +1,5 @@
 import { HTMLCanvas, XMLSVG } from './src/views/index.js';
-import init, { transformSVG } from './implementation/index.js'
+import init, { transformSVG } from './implementation/index.js';
 
 document.addEventListener('DOMContentLoaded', ()=>{
 
