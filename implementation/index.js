@@ -22,7 +22,7 @@ export default (View) => {
                         hidden: !true,
                         scalingFactor: 1,
                         points: [
-                            /* DEVViewNOTE # Define shape in relative units, scale later:.. */
+                            /* DEV_NOTE # Define shape in relative units, scale later:.. */
                             { x: 0, y: 0 },
                             { x: 2 * 1, y: 0 },
                             { x: 1 * 1, y: 1 * 1 },
@@ -46,20 +46,20 @@ export const transformSVG = ({HTMLCanvas, XMLSVG, parent}) =>{
     const svgElement = XMLSVG.Helpers.findBy(parent.element.id);
     if ( svgElement ) {
 
-        let scalingFactor = 2;
-        Array.from(svgElement.children).forEach((shape, i) => {
+        let 
+            scalingFactor = 2
+            ;
+
+        Array.from(svgElement.children).on((shape, i) => {
 
             switch (shape.tagName) {
                 case 'rect':
                     void function(){
-
-                        shape.attributes.x.value = Number(stage.grid.SVG.X_IN_MIDDLE)
-                        shape.attributes.y.value = Number(stage.grid.SVG.Y_IN_MIDDLE);
-
-                        shape.attributes.width.value = stage.grid.GRIDCELL_DIM * scalingFactor
-                        shape.attributes.height.value = stage.grid.GRIDCELL_DIM * scalingFactor
-                        shape.attributes.width.value = stage.grid.GRIDCELL_DIM * scalingFactor
-                        shape.attributes.height.value = stage.grid.GRIDCELL_DIM * scalingFactor
+                        
+                        if ( registerSettersFor(shape) ) {
+                            shape.setTranslate({x: Number(stage.grid.SVG.X_IN_MIDDLE), y: Number(stage.grid.SVG.Y_IN_MIDDLE)});
+                            shape.setArea({width: stage.grid.GRIDCELL_DIM * scalingFactor, height: stage.grid.GRIDCELL_DIM * scalingFactor});
+                        }                        
                         
                         /**
                          * 
@@ -85,15 +85,13 @@ export const transformSVG = ({HTMLCanvas, XMLSVG, parent}) =>{
                 case 'path':
                     void function () {
 
-                        shape.style.strokeWidth = 1 / stage.grid.GRIDCELL_DIM
+                        shape.style.strokeWidth = 1 / stage.grid.GRIDCELL_DIM;
                         
                         const currentMatrix = (cursorFeedback) => {
 
                             const matrix = new DOMMatrix(
                                 HTMLCanvas.Helpers.Trigonometry.setTransform(-45, (cursorFeedback?.x || Number(stage.grid.SVG.X_IN_MIDDLE)), (cursorFeedback?.y || Number(stage.grid.SVG.Y_IN_MIDDLE)))
-                            );
-                            
-                            if (matrix) matrix.scaleSelf(stage.grid.GRIDCELL_DIM * ( 1 / Math.cos( Math.PI/4 ) ), stage.grid.GRIDCELL_DIM * ( 1 / Math.cos( Math.PI/4 ) ));
+                            ); matrix.scaleSelf(stage.grid.GRIDCELL_DIM * ( 1 / Math.cos( Math.PI/4 ) ) , stage.grid.GRIDCELL_DIM * ( 1 / Math.cos( Math.PI/4 ) ));
                             
                             return matrix;
 
@@ -116,5 +114,27 @@ export const transformSVG = ({HTMLCanvas, XMLSVG, parent}) =>{
         });
 
     }
+
+}
+
+function registerSettersFor(svgShape){
+    
+    switch (svgShape.tagName) {
+        case 'rect':
+            Object.assign(svgShape, {
+                setTranslate({x=0, y=0}){
+                    svgShape.attributes.x.value = x;
+                    svgShape.attributes.y.value = y;
+                }
+                ,
+                setArea({width=1, height=1}){
+                    svgShape.attributes.width.value = width;
+                    svgShape.attributes.height.value = height;
+                }
+            })
+        break;
+    }
+
+    return true;
 
 }
