@@ -1,15 +1,15 @@
-import "./utils";
+import "./DOMutils.js";
 import { stage_view } from './stage-view/index.js';
 import { layer_view } from './layer-view/index.js';
 import { grid_view } from './grid-view/index.js'
-import { degToRad, radToDeg, setTransform } from "./trigonometry";
+import { degToRad, radToDeg, setTransform } from "./modules/maths/index.js";
 
 export class HTMLCanvas {
 
     /**
      * @typedef {Array} Iterable
      * 
-     * @param {HTMLDivElement} `stage` - the reference to the current instance of `stage`
+     * @param {HTMLDivElement} `stage` - a reference to the current instance of `stage`
      * @returns {Iterable} `Iterable` : if such iterable is iterated, each value of such `Iterable`'s is a "`view-group`"; top-level `view-group` conventionally is called **"`stage`"**, otherwise it's a **"`layer`"**
      */
         static init({ stage }) {

@@ -29,11 +29,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
                         if ( context instanceof CanvasRenderingContext2D ) {
                 
-                                const canvas = context.canvas;
+                            const canvas = context.canvas;
                                                 
                                 switch (canvas.name) {
                 
                                     case stage.layers.grid.name :
+
                                         HTMLCanvas.Views.Grid.draw({
                                             canvas,
                                             options: {
@@ -43,24 +44,25 @@ document.addEventListener('DOMContentLoaded', ()=>{
                                                 opacity: 0.25
                                             }
                                         });
+                                    
                                     break;
 
                                 }
                         }
 
-                    /* === SVGraphics === */
+                    /* === XMLSVG === */
 
                         if ( stage.grid ) transformSVG({HTMLCanvas, XMLSVG, parent: svgContainer}) ;
     
-                    /* === SVGraphics === */
+                    /* === XMLSVG === */
                     
-                    })
+                    endon:;});
             
         })
 
         // # This allows to init bitmap with internal context without waiting `window.onresize` to be triggered by end-user (or developer)
         window.dispatchEvent(new Event('resize'));
 
-    }
+    endif:;}
 
 });

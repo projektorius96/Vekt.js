@@ -1,4 +1,4 @@
-import './utils.js';
+import './DOMutils.js';
 import { enableDraggingFor } from './modules/index.js';
 import { svg_container } from './svg-container/index.js';
 import { svg_circle } from './svg-circle/index.js';

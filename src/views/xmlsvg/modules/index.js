@@ -1,5 +1,30 @@
+export function getNamespace(import_meta_url) {
+
+    return (
+        new URL(import_meta_url).pathname.split('/').at(-2)
+    );
+
+}
+
+export function setCoords() {
+
+    const 
+        svgElement = this.firstElementChild
+        ,
+        viewBox = svgElement.viewBox.baseVal
+        ;
+
+        svgElement.setAttribute('viewBox', `${0} ${0} ${Math.ceil(window.innerWidth)} ${Math.ceil(window.innerHeight)}`)
+        
+    return ({
+        getViewBox(){
+            return viewBox
+        }
+    });
+    
+}
+
 /**
- * 
  * @param {EventTarget} currentTarget - EventTarget-exposed `currentTarget` property
  * @returns {void} Enables the dragging for the `currentTarget`; _Press and keep Alt, whilst dragging the `currentTarget` with pointer (e.g. mouse)_; **NOTE**: you may need to double click on the `currentTarget` before start dragging procedure...
  */
