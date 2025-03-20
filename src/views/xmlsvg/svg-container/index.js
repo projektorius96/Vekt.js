@@ -1,6 +1,6 @@
 import setStyling from './index.css.js'
 
-import { setCoords, getNamespace } from "../utils";
+import { setCoords, getNamespace } from "../modules/index.js";
 
 export const svg_container = getNamespace(import.meta.url);
 customElements.define(svg_container, class extends HTMLElement {
