@@ -51,18 +51,11 @@ customElements.define(svg_path, class extends HTMLElement {
 
         }
 
-        return ({
+        /* return ({
             component: this,
             element: this.firstElementChild
-        });
+        }); */
 
-    }
-
-    /**
-     * @implements
-     */
-    connectedCallback(){
-        /* ... */
     }
 
 });

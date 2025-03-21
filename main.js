@@ -1,7 +1,10 @@
-import { HTMLCanvas, XMLSVG } from './src/views/index.js';
+import { HTMLCanvas, XMLSVG, ENUMS as COLORS } from './src/views/index.js';
 import initSVG, { transformSVG } from './implementation/index.js';
+import package_json from './package.json' with { type: 'json' };
 
 document.addEventListener('DOMContentLoaded', ()=>{
+
+    document.title = package_json.name;
 
     document.body.appendChild(
         new HTMLCanvas.ViewGroup.Stage({
@@ -11,12 +14,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
         })
     );
 
-    const svgContainer = initSVG(XMLSVG.Views);
+    const svgContainer = initSVG({Views: XMLSVG.Views, COLORS});
         document.body.children.stage?.add([
             new HTMLCanvas.ViewGroup.Layer({
                 name: 'grid'
             }),
-            svgContainer.component
+            svgContainer
         ])
 
     if ( HTMLCanvas.init({stage}) ) {
@@ -40,7 +43,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
                                             options: {
                                                 hidden: !true,
                                                 lineWidth: 1,
-                                                strokeStyle: 'grey',
+                                                strokeStyle: COLORS.grey.value,
                                                 opacity: 0.25
                                             }
                                         });

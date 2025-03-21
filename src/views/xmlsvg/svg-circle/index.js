@@ -21,7 +21,7 @@ customElements.define(svg_circle, class extends HTMLElement {
                     cy="${ options.translateY || 0  }" 
                     r=${ (options.scalingFactor * options.radius) ?? Math.min(window.innerWidth, window.innerHeight)/4 } 
                     />
-            `);
+                `);
 
             }
 
@@ -33,20 +33,13 @@ customElements.define(svg_circle, class extends HTMLElement {
             let javascript;
             Object.assign(this, {options});
 
-        }
+        }        
 
-        return ({
+        /* return ({
             component: this,
             element: this.firstElementChild
-        });
+        }); */
 
-    }
-
-    /**
-     * @implements
-     */
-    connectedCallback(){
-        /* ... */
     }
 
 });

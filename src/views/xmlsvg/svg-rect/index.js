@@ -39,18 +39,11 @@ customElements.define(svg_rect, class extends HTMLElement {
 
         }
 
-        return ({
+        /* return ({
             component: this,
             element: this.firstElementChild
-        });
+        }); */
 
-    }
-
-    /**
-     * @implements
-     */
-    connectedCallback(){
-        /* ... */
     }
 
 });
