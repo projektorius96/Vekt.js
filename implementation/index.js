@@ -1,7 +1,10 @@
 export default ({Views, COLORS}) => {
 
     const 
-        [black, yellow, red, green, blue] = [COLORS.black, COLORS.yellow, COLORS.red, COLORS.green, COLORS.blue];
+        [red, green, blue] = [COLORS.red, COLORS.green, COLORS.blue]
+        ,
+        [black, yellow] = [COLORS.black, COLORS.yellow]
+        ;
 
     return (
         new Views.Container({
