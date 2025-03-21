@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
             new HTMLCanvas.ViewGroup.Layer({
                 name: 'grid'
             }),
-            svgContainer.component
+            svgContainer/* .component */
         ])
 
     if ( HTMLCanvas.init({stage}) ) {

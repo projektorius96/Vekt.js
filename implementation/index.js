@@ -26,7 +26,7 @@ export default ({Views, COLORS}) => {
                         hidden: !true,
                         scalingFactor: 1,
                         points: [
-                            /* DEV_NOTE # Define shape in relative units, scale later:.. */
+                            /* EXAMPLE # Define now (in relative units), scale later:.. */
                             { x: 0, y: 0 },
                             { x: 2 * 1, y: 0 },
                             { x: 1 * 1, y: 1 * 1 },
@@ -40,23 +40,21 @@ export default ({Views, COLORS}) => {
                 new Views.Rect({ options: { id: 'rect-1', hidden: !true, scalingFactor: 100, fill: red.value } })
                 ,
                 new Views.Rect({ options: { id: 'rect-2', hidden: !true, scalingFactor: 100, fill: blue.value } })
-            ].map((access)=> access = access.component)
+            ]
         })
     );
 }
 
 export const transformSVG = ({HTMLCanvas, XMLSVG, parent}) =>{
 
-    const svgElement = XMLSVG.Helpers.findBy(parent.element.id);
-    if ( svgElement ) {
+    const svgElement = XMLSVG.Helpers.findBy(parent.firstElementChild.id);
+        if ( svgElement ) {
 
-        let 
-            scalingFactor = 2
-            ;
+            let 
+                scalingFactor = 2
+                ;
 
-        Array.from(svgElement.children).on((shape) => {
-
-            if ( registerSettersFor( shape ) ) {
+            Array.from(svgElement.children).on((shape) => {
 
                 switch (shape.tagName) {
                     case 'rect':
@@ -111,68 +109,13 @@ export const transformSVG = ({HTMLCanvas, XMLSVG, parent}) =>{
                         }();
                     break;
                 }
-            
-            }
 
-            shape.addEventListener('click', (e)=>{
-                if (shape.tagName !== 'path') XMLSVG.enableDraggingFor(e.currentTarget) ;
+                shape.addEventListener('click', (e)=>{
+                    if (shape.tagName !== 'path') XMLSVG.enableDraggingFor(e.currentTarget) ;
+                });
+
             });
 
-        });
-
-    }
-
-}
-
-function registerSettersFor(svgShape){
-    
-    switch (svgShape.tagName) {
-        case 'rect':
-            Object.assign(svgShape, {
-                getTranslate(){
-                    return ({
-                        x: svgShape.attributes.x.value,
-                        y: svgShape.attributes.y.value
-                    })
-                }
-                ,
-                setTranslate({x=0, y=0}){
-                    svgShape.attributes.x.value = x;
-                    svgShape.attributes.y.value = y;
-                }
-                ,
-                getArea(){
-                    return ({
-                        width: svgShape.attributes.width.value  ,
-                        height: svgShape.attributes.height.value,
-                    })
-                }
-                ,
-                setArea({width=1, height=1}){
-                    svgShape.attributes.width.value = width;
-                    svgShape.attributes.height.value = height;
-                }
-            })
-        break;
-        case 'circle':
-            Object.assign(svgShape, {
-                getCircle(){
-                    return ({
-                        cx: svgShape.attributes.cx.value, 
-                        cy: svgShape.attributes.cy.value, 
-                        r: svgShape.attributes.r.value
-                    })
-                }
-                ,
-                setCircle({cx=0, cy=0, r=1}){
-                    svgShape.attributes.cx.value = cx
-                    svgShape.attributes.cy.value = cy;
-                    svgShape.attributes.r.value = r;
-                }
-            })
-        break;
-    }
-
-    return true;
+        }
 
 }

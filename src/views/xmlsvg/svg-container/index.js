@@ -38,10 +38,12 @@ customElements.define(svg_container, class extends HTMLElement {
 
         }
 
-        return ({
+        return this;
+
+        /* return ({
             component: this,
             element: this.firstElementChild
-        });
+        }); */
 
     }
     
@@ -57,6 +59,55 @@ customElements.define(svg_container, class extends HTMLElement {
                 setCoords.call(this)
                 
             });
+
+            Array.from(this.firstElementChild.children).forEach((view)=>{
+                switch (view.tagName.toLowerCase()) {
+                    case 'circle' :
+                        Object.assign(view, {
+                            getCircle(){
+                                return ({
+                                    cx: view.attributes.cx.value, 
+                                    cy: view.attributes.cy.value, 
+                                    r: view.attributes.r.value
+                                })
+                            }
+                            ,
+                            setCircle({cx=0, cy=0, r=1}){
+                                view.attributes.cx.value = cx
+                                view.attributes.cy.value = cy;
+                                view.attributes.r.value = r;
+                            }
+                        });
+                    break;
+                    case 'rect' :
+                        Object.assign(view, {
+                            getTranslate(){
+                                return ({
+                                    x: view.attributes.x.value,
+                                    y: view.attributes.y.value
+                                })
+                            }
+                            ,
+                            setTranslate({x=0, y=0}){
+                                view.attributes.x.value = x;
+                                view.attributes.y.value = y;
+                            }
+                            ,
+                            getArea(){
+                                return ({
+                                    width: view.attributes.width.value  ,
+                                    height: view.attributes.height.value,
+                                })
+                            }
+                            ,
+                            setArea({width=1, height=1}){
+                                view.attributes.width.value = width;
+                                view.attributes.height.value = height;
+                            }
+                        })
+                    break;
+                }
+            })
 
         }
         
