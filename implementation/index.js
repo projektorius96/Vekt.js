@@ -1,22 +1,26 @@
-export default (View) => {
+export default ({Views, COLORS}) => {
+
+    const 
+        [black, yellow, red, green, blue] = [COLORS.black, COLORS.yellow, COLORS.red, COLORS.green, COLORS.blue];
+
     return (
-        new View.Container({
+        new Views.Container({
             options: {
                 id: 'svg-container',
             },
             childrenList: [
-                new View.Circle({
+                new Views.Circle({
                     options: {
                         id: 'svg-circle',
                         hidden: !true,
                         scalingFactor: 1,
-                        fill: 'black',
+                        fill: black.value,
                         radius: 150,
                         translateX: window.innerWidth / 2,
                         translateY: window.innerHeight / 2,
                     }
                 }),
-                new View.Path({
+                new Views.Path({
                     options: {
                         id: 'svg-path',
                         hidden: !true,
@@ -28,14 +32,14 @@ export default (View) => {
                             { x: 1 * 1, y: 1 * 1 },
                             { x: 0, y: 0 },
                         ],
-                        fill: 'yellow',
-                        stroke: 'blue',
+                        fill: yellow.value,
+                        stroke: blue.value,
                     }
                 })
                 ,
-                new View.Rect({ options: { id: 'rect-1', hidden: !true, scalingFactor: 100, fill: "red" } })
+                new Views.Rect({ options: { id: 'rect-1', hidden: !true, scalingFactor: 100, fill: red.value } })
                 ,
-                new View.Rect({ options: { id: 'rect-2', hidden: !true, scalingFactor: 100, fill: "blue" } })
+                new Views.Rect({ options: { id: 'rect-2', hidden: !true, scalingFactor: 100, fill: blue.value } })
             ].map((access)=> access = access.component)
         })
     );

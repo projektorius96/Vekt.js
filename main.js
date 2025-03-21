@@ -1,4 +1,4 @@
-import { HTMLCanvas, XMLSVG } from './src/views/index.js';
+import { HTMLCanvas, XMLSVG, ENUMS as COLORS } from './src/views/index.js';
 import initSVG, { transformSVG } from './implementation/index.js';
 
 document.addEventListener('DOMContentLoaded', ()=>{
@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
         })
     );
 
-    const svgContainer = initSVG(XMLSVG.Views);
+    const svgContainer = initSVG({Views: XMLSVG.Views, COLORS});
         document.body.children.stage?.add([
             new HTMLCanvas.ViewGroup.Layer({
                 name: 'grid'
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
                                             options: {
                                                 hidden: !true,
                                                 lineWidth: 1,
-                                                strokeStyle: 'grey',
+                                                strokeStyle: COLORS.magenta.value,
                                                 opacity: 0.25
                                             }
                                         });
