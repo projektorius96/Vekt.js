@@ -1,17 +1,15 @@
 /**
- * 
- * @param {Object} options
  * @returns `true`, whilst setting the styles for bound `this` target element
 */
-export default function (options) {
+export default function () {
 
     /**
      * @type
      * 
-     * > **NOTE**: We're arbitrary accruing each letter's position in Latin's alphabet
+     * > **NOTE**: herein we're arbitrary accruing each letter's position in Latin's alphabet
      */
-    let HOVER_OVER_ME;
-    const [S, V, G] = [19, 22, 7];
+    let HOVER_ME;
+        const [S, V, G] = [19, 22, 7];
 
     this.style.cssText = /* style */`
         width: calc(100vw - (100vw - 100%));

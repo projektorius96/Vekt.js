@@ -9,10 +9,6 @@ customElements.define(svg_rect, class extends HTMLElement {
 
             if (!options.hidden){
 
-                /**
-                 * @html
-                 */
-                let html;
                 this.setHTMLUnsafe(/* html */`
                     <rect 
                         id="${ options.id }" 
@@ -28,21 +24,7 @@ customElements.define(svg_rect, class extends HTMLElement {
 
             }
 
-            /**
-             * @javascript
-             * 
-             * > The following line makes `options` available within e.g. `connectedCallback` accessed as `this.options`
-             */
-            let javascript;
-
-            Object.assign(this, {options});
-
         }
-
-        /* return ({
-            component: this,
-            element: this.firstElementChild
-        }); */
 
     }
 
