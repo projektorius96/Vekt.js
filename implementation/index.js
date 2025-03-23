@@ -31,7 +31,7 @@ export default ({Views, HTMLCanvas, COLORS}) => {
                         hidden: !true,
                         scalingFactor: 1,
                         points: [
-                            ...setRange(0, vectorBasis.PERIODIC.WAVE.TYPE.TOOTH, 360).map((deg, i)=>{
+                            ...setRange(0, vectorBasis.PERIODIC.WAVE.TYPE.SMOOTH, 360).map((deg, i)=>{
                                 return {
                                     x: 1 * /* Math.cos( */ Converters.degToRad( deg ) /* ) */,
                                     y: 1 * Math.sin( Converters.degToRad( deg ) ),
