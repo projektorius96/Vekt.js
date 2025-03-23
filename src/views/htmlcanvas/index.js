@@ -2,7 +2,7 @@ import "./DOMutils.js";
 import { stage_view } from './stage-view/index.js';
 import { layer_view } from './layer-view/index.js';
 import { grid_view } from './grid-view/index.js'
-import { degToRad, radToDeg, setTransform } from "./modules/maths/index.js";
+import { degToRad, radToDeg, setTransform, setRange } from "./modules/maths/index.js";
 
 export class HTMLCanvas {
 
@@ -108,6 +108,8 @@ export class HTMLCanvas {
 
     static Helpers = {
         Trigonometry: {
+            setRange
+            ,
             setTransform
             ,
             Converters: {

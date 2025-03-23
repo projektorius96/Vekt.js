@@ -1,11 +1,13 @@
-export default ({Views, COLORS}) => {
+import { vectorBasis } from "./primitives.js";
 
-    const 
+export default ({Views, HTMLCanvas, COLORS}) => {
+
+    const
         [red, green, blue] = [COLORS.red, COLORS.green, COLORS.blue]
         ,
-        [black, yellow] = [COLORS.black, COLORS.yellow]
+        { Converters, setRange } = HTMLCanvas.Helpers.Trigonometry
         ;
-
+        
     return (
         new Views.Container({
             options: {
@@ -17,7 +19,7 @@ export default ({Views, COLORS}) => {
                         id: 'svg-circle',
                         hidden: !true,
                         scalingFactor: 1,
-                        fill: black.value,
+                        fill: green.value,
                         radius: 150,
                         translateX: window.innerWidth / 2,
                         translateY: window.innerHeight / 2,
@@ -29,20 +31,22 @@ export default ({Views, COLORS}) => {
                         hidden: !true,
                         scalingFactor: 1,
                         points: [
-                            /* EXAMPLE # Define now (in relative units), scale later:.. */
-                            { x: 0, y: 0 },
-                            { x: 2 * 1, y: 0 },
-                            { x: 1 * 1, y: 1 * 1 },
-                            { x: 0, y: 0 },
+                            ...setRange(0, vectorBasis.PERIODIC.WAVE.TYPE.TOOTH, 360).map((deg, i)=>{
+                                return {
+                                    x: 1 * /* Math.cos( */ Converters.degToRad( deg ) /* ) */,
+                                    y: 1 * Math.sin( Converters.degToRad( deg ) ),
+                                }
+                            })
                         ],
-                        fill: yellow.value,
-                        stroke: blue.value,
+                        strokeWidth: 0.1,
+                        fill: blue.value,
+                        stroke: red.value,
                     }
                 })
                 ,
-                new Views.Rect({ options: { id: 'rect-1', hidden: !true, scalingFactor: 100, fill: red.value } })
+                new Views.Rect({ options: { id: 'rect-1', hidden: /* ! */true, scalingFactor: 100, fill: red.value } })
                 ,
-                new Views.Rect({ options: { id: 'rect-2', hidden: !true, scalingFactor: 100, fill: blue.value } })
+                new Views.Rect({ options: { id: 'rect-2', hidden: /* ! */true, scalingFactor: 100, fill: blue.value } })
             ]
         })
     );
@@ -91,13 +95,16 @@ export const transformSVG = ({HTMLCanvas, XMLSVG, parent}) =>{
                     case 'path':
                         void function () {
     
-                            shape.style.strokeWidth = 1 / stage.grid.GRIDCELL_DIM;
+                            /* shape.style.strokeWidth = 1 / stage.grid.GRIDCELL_DIM; */
                             
                             const currentMatrix = (cursorFeedback) => {
     
-                                const matrix = new DOMMatrix(
-                                    HTMLCanvas.Helpers.Trigonometry.setTransform(-45, (cursorFeedback?.x || Number(stage.grid.SVG.X_IN_MIDDLE)), (cursorFeedback?.y || Number(stage.grid.SVG.Y_IN_MIDDLE)))
-                                ); matrix.scaleSelf(stage.grid.GRIDCELL_DIM * ( 1 / Math.cos( Math.PI/4 ) ) , stage.grid.GRIDCELL_DIM * ( 1 / Math.cos( Math.PI/4 ) ));
+                                const
+                                    DEFAULT_ANGLE = 0
+                                    ,
+                                    matrix = new DOMMatrix(
+                                        HTMLCanvas.Helpers.Trigonometry.setTransform( DEFAULT_ANGLE , (cursorFeedback?.x || Number(stage.grid.SVG.X_IN_MIDDLE)), (cursorFeedback?.y || Number(stage.grid.SVG.Y_IN_MIDDLE)))
+                                    );;matrix.scaleSelf(stage.grid.GRIDCELL_DIM * ( 1 / Math.cos( Math.PI/4 ) ) , stage.grid.GRIDCELL_DIM * ( 1 / Math.cos( Math.PI/4 ) ));
                                 
                                 return matrix;
     

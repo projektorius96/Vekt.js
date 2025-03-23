@@ -14,7 +14,9 @@ document.addEventListener('DOMContentLoaded', ()=>{
         })
     );
 
-    const svgContainer = initSVG({Views: XMLSVG.Views, COLORS});
+    const
+        svgContainer = initSVG({Views: XMLSVG.Views, HTMLCanvas, COLORS})
+        ;
         document.body.children.stage?.add([
             new HTMLCanvas.ViewGroup.Layer({
                 name: 'grid'

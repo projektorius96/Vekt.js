@@ -42,3 +42,35 @@ export function radToDeg(rad){
         rad * (180 / Math.PI)
     )
 }
+
+/**
+ * @param {Number} start - range lower bound ;
+ * @param {Number} step  - range step bound  ;
+ * @param {Number} end   - range upper bound ;
+ * @param {Boolean} [isIncluded=true] - isIncluded === true ? [start:end] : [start:end) ;
+ * @param {Array} [skip=Array]        - useful for some trigonometry calls such as Math.cos at discrete { 90 | 270 } angle degree units, e.g. when Math.cos resolves to undefined, to avoid such scenario we have this exposed param ;
+ * @returns {Array} range if { [start:end) when isIncluded := false | [start:end] when isIncluded := true } : default is when "isIncluded := true" ;
+ */
+export function setRange(start, step, end, isIncluded=true, skip = []){
+    
+    const range = [];
+    
+    loop1: for (start; start < end + isIncluded; start += step) {
+
+        loop2: for (let items of skip) {
+
+            if (items == start) {
+
+                continue loop1;
+
+            }
+
+        }
+
+        range.push(start)
+
+    }
+
+    return range;
+    
+}
