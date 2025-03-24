@@ -73,7 +73,7 @@ export function diffShape({resource = 'smooth_wave', setRangeFn, Converters}) {
                 })
             )
         ;
-        case 'tooth_wave':
+        case 'triangle_wave':
             return (
                 setRangeFn(0, stepBasis*90, 360).map((deg)=>{
                     return {
