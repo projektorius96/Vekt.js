@@ -1,9 +1,33 @@
-import { vectorBasis } from "./primitives.js";
+import { diffShape } from "./primitives.js";
 
-export default ({Views, HTMLCanvas, COLORS}) => {
+export const initSVG = ({Views, HTMLCanvas, COLORS}) => {
 
+    /**
+     * @alias
+     */
+    const 
+        SHAPES = COLORS
+        ,
+        [
+            circle, 
+            square, 
+            iso_sceles, 
+            right_triangle, 
+            smooth_wave, 
+            tooth_wave
+        ] = [
+            SHAPES.circle.value, 
+            SHAPES.square.value, 
+            SHAPES.isosceles.value, 
+            SHAPES.right_triangle.value, 
+            SHAPES.smooth_wave.value,
+            SHAPES.tooth_wave.value
+        ]
+    ;
+    
+    
     const
-        [red, green, blue] = [COLORS.red, COLORS.green, COLORS.blue]
+        [red, green, blue] = [COLORS.red.value, COLORS.green.value, COLORS.blue.value]
         ,
         { Converters, setRange } = HTMLCanvas.Helpers.Trigonometry
         ;
@@ -18,8 +42,7 @@ export default ({Views, HTMLCanvas, COLORS}) => {
                     options: {
                         id: 'svg-circle',
                         hidden: !true,
-                        scalingFactor: 1,
-                        fill: green.value,
+                        fill: COLORS.black.value,
                         radius: 150,
                         translateX: window.innerWidth / 2,
                         translateY: window.innerHeight / 2,
@@ -29,24 +52,14 @@ export default ({Views, HTMLCanvas, COLORS}) => {
                     options: {
                         id: 'svg-path',
                         hidden: !true,
-                        scalingFactor: 1,
                         points: [
-                            ...setRange(0, vectorBasis.PERIODIC.WAVE.TYPE.SMOOTH, 360).map((deg, i)=>{
-                                return {
-                                    x: 1 * /* Math.cos( */ Converters.degToRad( deg ) /* ) */,
-                                    y: 1 * Math.sin( Converters.degToRad( deg ) ),
-                                }
-                            })
+                            ...diffShape({resource: smooth_wave, Converters, setRangeFn: setRange})
                         ],
-                        strokeWidth: 0.1,
-                        fill: blue.value,
-                        stroke: red.value,
+                        strokeWidth: 3,
+                        fill: blue,
+                        stroke: 'none',
                     }
                 })
-                ,
-                new Views.Rect({ options: { id: 'rect-1', hidden: /* ! */true, scalingFactor: 100, fill: red.value } })
-                ,
-                new Views.Rect({ options: { id: 'rect-2', hidden: /* ! */true, scalingFactor: 100, fill: blue.value } })
             ]
         })
     );
@@ -95,7 +108,8 @@ export const transformSVG = ({HTMLCanvas, XMLSVG, parent}) =>{
                     case 'path':
                         void function () {
     
-                            /* shape.style.strokeWidth = 1 / stage.grid.GRIDCELL_DIM; */
+                            shape.style.strokeWidth = 
+                                ( Number( shape.attributes.getNamedItem('stroke-width').value ) * (  1 / stage.grid.GRIDCELL_DIM ) );
                             
                             const currentMatrix = (cursorFeedback) => {
     
@@ -104,7 +118,10 @@ export const transformSVG = ({HTMLCanvas, XMLSVG, parent}) =>{
                                     ,
                                     matrix = new DOMMatrix(
                                         HTMLCanvas.Helpers.Trigonometry.setTransform( DEFAULT_ANGLE , (cursorFeedback?.x || Number(stage.grid.SVG.X_IN_MIDDLE)), (cursorFeedback?.y || Number(stage.grid.SVG.Y_IN_MIDDLE)))
-                                    );;matrix.scaleSelf(stage.grid.GRIDCELL_DIM * ( 1 / Math.cos( Math.PI/4 ) ) , stage.grid.GRIDCELL_DIM * ( 1 / Math.cos( Math.PI/4 ) ));
+                                    );
+                                    
+                                    // DEV_NOTE (!) # if you really want to see view (shape), make sure you have scaled it to some extent...
+                                    matrix.scaleSelf(stage.grid.GRIDCELL_DIM * ( 1 / Math.cos( Math.PI/4 ) ) , stage.grid.GRIDCELL_DIM * ( 1 / Math.cos( Math.PI/4 ) ));
                                 
                                 return matrix;
     

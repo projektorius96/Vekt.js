@@ -1,5 +1,5 @@
 import { HTMLCanvas, XMLSVG, ENUMS as COLORS } from './src/views/index.js';
-import initSVG, { transformSVG } from './implementation/index.js';
+import { initSVG, transformSVG } from './implementation/index.js';
 import package_json from './package.json' with { type: 'json' };
 
 document.addEventListener('DOMContentLoaded', ()=>{

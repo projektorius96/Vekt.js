@@ -17,7 +17,7 @@ customElements.define(svg_rect, class extends HTMLElement {
                         width="${ options.scalingFactor * (options.width || 1) }" 
                         height="${ options.scalingFactor * (options.height || 1) }" 
                         stroke="${ options.stroke || 'none' }" 
-                        stroke-width="${ options.strokeWidth || 1 }" 
+                        stroke-width="${ options.strokeWidth }" 
                         fill="${ options.fill || 'none' }"
                     />
                 `);

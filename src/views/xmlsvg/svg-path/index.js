@@ -27,8 +27,8 @@ customElements.define(svg_path, class extends HTMLElement {
                     <path
                         id="${ options.id }" 
                         d="${ this.#generateSVGPath(options.points) }"
-                        style="stroke:${ options.stroke || 'black'}; stroke-width:${ options.strokeWidth || 1 }; fill:${options.fill || 'none' };"
-                        transform="scale(${ options.scalingFactor * (options.scaleX || 1)}, ${options.scalingFactor * (options.scaleY || 1) })"
+                        stroke-Width="${ options.strokeWidth || 0 }"
+                        style="stroke:${ options.stroke || 'black'}; fill:${ options.fill || 'none' };"
                     />
                 `);
 

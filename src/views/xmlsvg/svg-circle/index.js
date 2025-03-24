@@ -15,7 +15,7 @@ customElements.define(svg_circle, class extends HTMLElement {
                         fill="${ options.fill || 'none' }"
                         cx="${ options.translateX || 0 }" 
                         cy="${ options.translateY || 0  }" 
-                        r=${ (options.scalingFactor * options.radius) ?? Math.min(window.innerWidth, window.innerHeight)/4 } 
+                        r=${ (options.radius) ?? Math.min(window.innerWidth, window.innerHeight)/4 } 
                     />
                 `);
 
