@@ -1,48 +1,30 @@
-import { diffShape } from "./primitives.js";
+import { diffShape, ENUMS } from "./primitives.js";
 
-export const initSVG = ({Views, HTMLCanvas, COLORS}) => {
+export const initSVG = ({Views, HTMLCanvas}) => {
 
-    /**
-     * @alias
-     */
-    const 
-        SHAPES = COLORS
+    let 
+        COLORS = ENUMS
         ,
-        [
-            circle, 
-            square, 
-            iso_sceles, 
-            right_triangle, 
-            smooth_wave, 
-            tooth_wave
-        ] = [
-            SHAPES.circle.value, 
-            SHAPES.square.value, 
-            SHAPES.isosceles.value, 
-            SHAPES.right_triangle.value, 
-            SHAPES.smooth_wave.value,
-            SHAPES.tooth_wave.value
-        ]
-    ;
-    
-    
-    const
-        [red, green, blue] = [COLORS.red.value, COLORS.green.value, COLORS.blue.value]
-        ,
-        { Converters, setRange } = HTMLCanvas.Helpers.Trigonometry
+        SHAPES = ENUMS
         ;
+
+    const
+        { Converters, setRange } = HTMLCanvas.Helpers.Trigonometry;
         
     return (
         new Views.Container({
             options: {
                 id: 'svg-container',
+                global: {
+                    scalingFactor: 2
+                }
             },
             childrenList: [
                 new Views.Circle({
                     options: {
                         id: 'svg-circle',
                         hidden: !true,
-                        fill: COLORS.black.value,
+                        fill: COLORS.black,
                         radius: 150,
                         translateX: window.innerWidth / 2,
                         translateY: window.innerHeight / 2,
@@ -53,10 +35,10 @@ export const initSVG = ({Views, HTMLCanvas, COLORS}) => {
                         id: 'svg-path',
                         hidden: !true,
                         points: [
-                            ...diffShape({resource: smooth_wave, Converters, setRangeFn: setRange})
+                            ...diffShape({resource: SHAPES.smooth_wave, Converters, setRangeFn: setRange})
                         ],
                         strokeWidth: 3,
-                        fill: blue,
+                        fill: COLORS.blue,
                         stroke: 'none',
                     }
                 })
@@ -71,7 +53,7 @@ export const transformSVG = ({HTMLCanvas, XMLSVG, parent}) =>{
         if ( svgElement ) {
 
             let 
-                scalingFactor = 2
+                scalingFactor = parent.options.global.scalingFactor
                 ;
 
             Array.from(svgElement.children).on((shape) => {

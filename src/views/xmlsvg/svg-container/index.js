@@ -27,6 +27,7 @@ customElements.define(svg_container, class extends HTMLElement {
 
         }
 
+        Object.assign(this, {options})
         return this;
 
     }

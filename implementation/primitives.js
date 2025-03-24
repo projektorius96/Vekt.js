@@ -1,4 +1,20 @@
-export function diffShape({resource = 'circle', setRangeFn, Converters}){
+/**
+ * @example
+ * ENUMS.red; // 'red'
+ * ENUMS.green; // 'green'
+ * ENUMS.blue; // 'blue'
+*/
+let HOVER_ME_0;
+    export const
+        ENUMS = 
+        new Proxy( Object.create(null) , {
+            get(nil, key){
+                return (`${key}`);
+            }
+        })
+        ;
+
+export function diffShape({resource = 'circle', setRangeFn, Converters}) {
 
     let stepBasis = 1;
     switch (resource) {

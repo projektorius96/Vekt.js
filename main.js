@@ -1,4 +1,4 @@
-import { HTMLCanvas, XMLSVG, ENUMS as COLORS } from './src/views/index.js';
+import { HTMLCanvas, XMLSVG } from './src/views/index.js';
 import { initSVG, transformSVG } from './implementation/index.js';
 import package_json from './package.json' with { type: 'json' };
 
@@ -10,12 +10,12 @@ document.addEventListener('DOMContentLoaded', ()=>{
         new HTMLCanvas.ViewGroup.Stage({
             container: document.body,
             id: 'stage', 
-            scale: 20
+            scale: 30
         })
     );
 
     const
-        svgContainer = initSVG({Views: XMLSVG.Views, HTMLCanvas, COLORS})
+        svgContainer = initSVG({Views: XMLSVG.Views, HTMLCanvas})
         ;
         document.body.children.stage?.add([
             new HTMLCanvas.ViewGroup.Layer({
@@ -45,7 +45,7 @@ document.addEventListener('DOMContentLoaded', ()=>{
                                             options: {
                                                 hidden: !true,
                                                 lineWidth: 1,
-                                                strokeStyle: COLORS.grey.value,
+                                                strokeStyle: 'grey',
                                                 opacity: 0.25
                                             }
                                         });
