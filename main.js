@@ -8,9 +8,11 @@ document.addEventListener('DOMContentLoaded', ()=>{
 
     document.body.appendChild(
         new HTMLCanvas.ViewGroup.Stage({
-            container: document.body,
-            id: 'stage', 
-            scale: 30
+            /* === DEVELOPER IS WELCOME TO MODIFY: === */
+                container: document.body,
+                id: 'stage', 
+                scale: 30
+            /* === DEVELOPER IS WELCOME TO MODIFY; === */
         })
     );
 
@@ -40,34 +42,32 @@ document.addEventListener('DOMContentLoaded', ()=>{
                 
                                     case stage.layers.grid.name :
 
-                                        HTMLCanvas.Views.Grid.draw({
-                                            canvas,
-                                            options: {
-                                                hidden: !true,
-                                                lineWidth: 1,
-                                                strokeStyle: 'grey',
-                                                opacity: 0.25
-                                            }
-                                        });
+                                        if (
+                                            HTMLCanvas.Views.Grid.draw({
+                                                canvas,
+                                                options: {
+                                                /* === DEVELOPER IS WELCOME TO MODIFY: === */
+                                                    hidden: !true,
+                                                    lineWidth: 1,
+                                                    strokeStyle: 'grey',
+                                                    opacity: 0.25
+                                                /* === DEVELOPER IS WELCOME TO MODIFY; === */
+                                                }
+                                            })
+                                        ) transformSVG({HTMLCanvas, XMLSVG, parent: svgContainer}) ;
                                     
                                     break;
 
                                 }
                         }
-
-                    /* === XMLSVG === */
-
-                        if ( stage.grid ) transformSVG({HTMLCanvas, XMLSVG, parent: svgContainer}) ;
-    
-                    /* === XMLSVG === */
                     
-                    endon:;});
+                    });
             
         })
 
-        // # This allows to init bitmap with internal context without waiting `window.onresize` to be triggered by end-user (or developer)
+        // # This allows to init bitmap with internal context without waiting `window.onresize` to be triggered by end-user
         window.dispatchEvent(new Event('resize'));
 
-    endif:;}
+    }
 
 });

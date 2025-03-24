@@ -14,7 +14,13 @@ let HOVER_ME_0;
         })
         ;
 
-export function diffShape({resource = 'circle', setRangeFn, Converters}) {
+/**
+ * @param  {Object}   `options`                   - the input this function accepts 
+ * @param  {String}   [`options.resource`='circle'] - `resource` is symbolic name this function differentiates against (**see `switch` statement `case`s** for current available list of `resource`s) | Default: 'smooth_wave'
+ * @param  {Function} `options.setRangeFn`        - function body passed
+ * @return {Object}   `options.Converters`        - forwared `options.Converters` object, originally defined within "`HTMLCanvas`" named module export
+ */
+export function diffShape({resource = 'smooth_wave', setRangeFn, Converters}) {
 
     let stepBasis = 1;
     switch (resource) {
