@@ -2,29 +2,34 @@ import { setRange } from "../modules/maths/index.js";
 
 export class grid_view {
 
+    static getNamespace(){
+        return (
+            (new URL(import.meta.url)).pathname
+        )
+    }
+
     /**
      * The `default.draw` static method takes single `Object` as its input whose properties are as follows:
      * @param {HTMLCanvasElement} `canvas` - a reference to `canvas` (_a.k.a. "Layer"_)
      * @param {Object} `options`           - options you have passed to shape's current `context` of the current `canvas` reference
      * @returns {CanvasRenderingContext2D} `context` - the modified `context` with a `grid` view "painted" on the `<canvas>` hosted bitmap
     */
-    static draw({context, options}){
+    static draw({hostContext, context, options}){
 
         let 
-            gridcellDim = stage.grid.GRIDCELL_DIM
+            gridcellDim = /* stage.grid.GRIDCELL_DIM */options.grid.GRIDCELL_DIM
             ,
             gridcellMatrix = setRange(0, gridcellDim, context.canvas.width)
             ;
         
-        context.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
+        context.setTransform(...[1, 0, 0, 1, 0, 0].map((abcdef)=>abcdef = abcdef*options.grid.DPR));
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-        
         
         /** {@link https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Transformations} */
         function drawGrid(x, y, xLen = gridcellDim, yLen = gridcellDim) {
 
             if (options.dotted){
-                const improveVisibility = (dot)=> dot = dot*stage.grid.GRIDCELL_DIM;
+                const improveVisibility = (dot)=> dot = dot*options.grid.GRIDCELL_DIM/* stage.grid.GRIDCELL_DIM */;
                 [xLen, yLen] = [1/gridcellDim, 1/gridcellDim].map(improveVisibility)
 
             } else {
@@ -42,9 +47,9 @@ export class grid_view {
         }
 
         let
-            divisorX = Math.ceil( stage.clientWidth / gridcellDim )
+            divisorX = Math.ceil( /* stage */context.canvas.width/* clientWidth  */ / gridcellDim )
             ,
-            divisorY = Math.ceil( stage.clientHeight / gridcellDim )
+            divisorY = Math.ceil( /* stage */context.canvas.height/* clientHeight */ / gridcellDim )
         ;
         ;[...new Array(divisorY)].map((v, row)=>{
 
@@ -67,8 +72,33 @@ export class grid_view {
 
         });
 
+
+
         return context;
     
     }
 
+}
+
+self.onmessage = function (e) {
+    
+    const context 
+        = grid_view.draw({
+            hostContext: e.data.hostContext,
+            context: e.data.canvas.getContext('2d'),
+            options: {
+                grid: {
+                    GRIDCELL_DIM: e.data.grid.GRIDCELL_DIM,
+                    DPR: e.data.grid.DPR
+                }
+            }
+        });
+
+    /* console.log(context); */// [PASSING]
+
+    const bitmap = context.canvas.transferToImageBitmap();
+
+    // Send ImageBitmap to main thread
+    self.postMessage({ bitmap }, [bitmap]); // Transfer ownership
+    
 }

@@ -42,16 +42,39 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
                 
                                     case stage.layers.grid.name :
 
-                                        if (
-                                            HTMLCanvas.Views.Grid.draw({
-                                                context,
-                                                options: {
-                                                /* === DEVELOPER IS WELCOME TO MODIFY: === */
-                                                    ...userConfigs.grid
-                                                /* === DEVELOPER IS WELCOME TO MODIFY; === */
+                                        const offscreenGrid = new OffscreenCanvas(context.canvas.width, context.canvas.height);
+                                            const worker$offscreenGrid = new Worker(`.${HTMLCanvas.Views.Grid.getNamespace()}`, { type: 'module' })
+                                                worker$offscreenGrid
+                                                .postMessage({
+                                                    canvas: offscreenGrid, 
+                                                    grid: { 
+                                                        GRIDCELL_DIM: stage.grid.GRIDCELL_DIM, 
+                                                        DPR: window.devicePixelRatio 
+                                                    }
                                                 }
-                                            })
-                                        ) transformSVG({HTMLCanvas, XMLSVG, parent: svgContainer}) ;
+                                                    , [ offscreenGrid]
+                                                )
+
+                                                worker$offscreenGrid.addEventListener(EVENTS.message, (e)=>{
+                                                    // Draw it back to the visible canvas
+                                                    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+                                                    context.drawImage(e.data.bitmap, 0, 0, context.canvas.width, context.canvas.height);
+                                                    e.data.bitmap.close();
+
+                                                })
+
+                                        // if (
+                                        //     HTMLCanvas.Views.Grid.draw({
+                                        //         context,
+                                        //         options: {
+                                        //         /* === DEVELOPER IS WELCOME TO MODIFY: === */
+                                        //             ...userConfigs.grid
+                                        //         /* === DEVELOPER IS WELCOME TO MODIFY; === */
+                                        //         }
+                                        //     })
+                                        // ) 
+                                        
+                                        transformSVG({HTMLCanvas, XMLSVG, parent: svgContainer}) ;
                                     
                                     break;
 
