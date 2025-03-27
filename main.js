@@ -34,34 +34,49 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
         
     if ( HTMLCanvas.init({stage}) ) {
 
+        /* === WORKER === */
+        const offscreenGrid = new OffscreenCanvas(stage.clientWidth, stage.clientHeight);
+        let worker$offscreenGrid = new Worker(`.${HTMLCanvas.Views.Grid.getNamespace()}`, { type: 'module' })
+            // worker$offscreenGrid
+            // .postMessage({
+            //     canvas: offscreenGrid, 
+            //     grid: { 
+            //         GRIDCELL_DIM: stage.grid.GRIDCELL_DIM, 
+            //         DPR: window.devicePixelRatio,
+            //         isSkewed: stage.layers.grid.isSkewed
+            //     }
+            // }
+            //     , [ offscreenGrid ]
+            // )
+        /* === WORKER === */
+
         window.on(EVENTS.resize, ()=>{
 
             HTMLCanvas
                 .init({stage})
                     .on((context)=>{
 
-                        if ( context instanceof (CanvasRenderingContext2D || ImageBitmapRenderingContext) ) {
+                        if ( context instanceof CanvasRenderingContext2D || context instanceof  ImageBitmapRenderingContext ) {
                                                                 
                                 switch (context.canvas.name) {
                 
                                     case stage.layers.grid.name :
 
-                                        const offscreenGrid = new OffscreenCanvas(context.canvas.width, context.canvas.height);
-                                            const worker$offscreenGrid = new Worker(`.${HTMLCanvas.Views.Grid.getNamespace()}`, { type: 'module' })
-                                                worker$offscreenGrid
-                                                .postMessage({
-                                                    canvas: offscreenGrid, 
-                                                    grid: { 
-                                                        GRIDCELL_DIM: stage.grid.GRIDCELL_DIM, 
-                                                        DPR: window.devicePixelRatio,
-                                                        isSkewed: stage.layers.grid.isSkewed
+                                                worker$offscreenGrid.postMessage({
+                                                    resize: {
+                                                        width: stage.layers.grid.width,
+                                                        height: stage.layers.grid.height,
                                                     }
-                                                }
-                                                    , [ offscreenGrid]
-                                                )
+                                                    ,
+                                                    grid: { 
+                                                        isSkewed: stage.layers.grid.isSkewed,
+                                                        GRIDCELL_DIM: stage.grid.GRIDCELL_DIM, 
+                                                        DPR: window.devicePixelRatio
+                                                    }
+                                                })
 
                                                 worker$offscreenGrid.addEventListener(EVENTS.message, (e)=>{
-                                                    
+
                                                     // context.clearRect(0, 0, context.canvas.width, context.canvas.height);
                                                     // context.drawImage(e.data.bitmap, 0, 0, context.canvas.width, context.canvas.height);
                                                     // e.data.bitmap.close();
@@ -73,8 +88,19 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
                                                      * .. the method called does itself automatically "consume" the `ImageBitmap`, meaning ownership is transferred, and the `ImageBitmap` is no longer valid after the call
                                                      */
                                                     let HOVER_ME_1;
-                                                    if ( !Boolean( stage.layers['grid.bitmaprenderer'].getContext('bitmaprenderer').transferFromImageBitmap(e.data.bitmap) ) ) {
-                                                        e.currentTarget.terminate();
+                                                    if (e.data.resizedBitmap){
+
+                                                        try {
+                                                            stage.layers['grid.bitmaprenderer'].getContext('bitmaprenderer').transferFromImageBitmap(e.data.resizedBitmap)
+                                                        } catch (error) {
+                                                            // DEV_NOTE # we deliberately suppress console
+                                                            /* if (error.name === 'InvalidStateError') {
+                                                                console.info("ImageBitmap is detached.");
+                                                            } else {
+                                                                console.warn("An unexpected error occurred:", error);
+                                                            } */
+                                                        }
+                                                        
                                                     }
 
                                                 });

@@ -129,25 +129,27 @@ export class grid_view {
 
 }
 
-self.onmessage = function (e) {
-    
-    const context 
-        = grid_view.draw({
-            context: e.data.canvas.getContext('2d'),
+/* let offscreenCtx; */
+self.onmessage = function (e) {    
+
+    if (e.data.resize){
+        
+        const offscreen = new OffscreenCanvas(e.data.resize.width, e.data.resize.height);
+        
+        grid_view.draw({
+            context: offscreen.getContext('2d'),
             options: {
                 grid: {
-                    GRIDCELL_DIM: e.data.grid.GRIDCELL_DIM,
-                    DPR: e.data.grid.DPR,
-                    isSkewed: e.data.grid.isSkewed
+                    ...e.data.grid
                 }
             }
         });
 
-    const bitmap = context.canvas.transferToImageBitmap();
+        let resizedBitmap = offscreen.transferToImageBitmap();
 
-    // DEV_NOTE # send ImageBitmap to the main thread
-    self.postMessage({ bitmap }, [bitmap]);
+        // // DEV_NOTE # send ImageBitmap to the main thread
+        self.postMessage({ resizedBitmap } , [ resizedBitmap ]);
 
-    /* self.terminate() */
+    }
     
 }
