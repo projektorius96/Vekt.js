@@ -73,22 +73,13 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
                                                      */
                                                     let HOVER_ME_1;
                                                     stage.layers['grid.bitmaprenderer'].getContext('bitmaprenderer').transferFromImageBitmap(e.data.bitmap)
+                                                    
+                                                    transformSVG({HTMLCanvas, XMLSVG, parent: svgContainer}) ;
 
-                                                })
+                                                    worker$offscreenGrid.terminate();
 
-                                        // if (
-                                        //     HTMLCanvas.Views.Grid.draw({
-                                        //         context,
-                                        //         options: {
-                                        //         /* === DEVELOPER IS WELCOME TO MODIFY: === */
-                                        //             ...userConfigs.grid
-                                        //         /* === DEVELOPER IS WELCOME TO MODIFY; === */
-                                        //         }
-                                        //     })
-                                        // ) 
-                                        
-                                        transformSVG({HTMLCanvas, XMLSVG, parent: svgContainer}) ;
-                                    
+                                                });
+
                                     break;
 
                                 }
