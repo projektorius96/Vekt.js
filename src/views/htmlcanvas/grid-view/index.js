@@ -1,4 +1,4 @@
-import { setRange } from "../modules/maths/index.js";
+import { setRange, degToRad } from "../modules/maths/index.js";
 
 export class grid_view {
 
@@ -22,8 +22,57 @@ export class grid_view {
             gridcellMatrix = setRange(0, gridcellDim, context.canvas.width)
             ;
         
-        context.setTransform(...[1, 0, 0, 1, 0, 0].map((abcdef)=>abcdef = abcdef*options.grid.DPR));
-        context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+        /**
+         * @algorithm 3Din2D (part 1)
+         */
+        if (options.grid.isSkewed){
+
+            context.setTransform(options.grid.DPR, 0, 0, options.grid.DPR, 0, 0);
+            context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+    
+            let sign = options.grid.isSkewed.sign || -1;
+            let { a, b, c, d, e, f } = context.getTransform();
+                let commonDivisor = 2;
+                c = sign * 1  * options.grid.DPR;
+                e = -1 * context.canvas.width/commonDivisor * options.grid.DPR
+                Object.assign(options.grid.isSkewed, {
+                    y: Math.sin( degToRad( (90 / commonDivisor) ) )
+                })
+            context.setTransform(a, b, c, d, e, f);
+    
+            /**
+             * @algorithm 3Din2D (part 2)
+             * @mediaqueries
+             */
+            if (context.canvas.width <= context.canvas.height && sign > 0) context.translate(-1 * context.canvas.width/4, 0) ;
+            if (context.canvas.width <= context.canvas.height && sign < 0) context.translate(+1 * context.canvas.width/4, 0) ;
+    
+           /*  context.save() */
+    
+            if (options.overrides?.transform){
+                if (options.overrides.transform?.translation){
+                    let { x, y } = options.overrides.transform.translation;
+                    context.translate(x, y)
+                }
+                if (options.overrides.transform?.angle){
+                    context.rotate(options.overrides.transform.angle)
+                    context.currentAngle = options.overrides.transform.angle;
+                }
+                if (options.overrides.transform?.scale){
+                    let { x, y } = options.overrides.transform.scale;
+                    context.scale(x, y);
+                }
+            }
+    
+            } else {
+    
+                /**
+                 * @default
+                 */
+                context.setTransform(options.grid.DPR, 0, 0, options.grid.DPR, 0, 0);
+                context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+    
+            }
         
         /** {@link https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Transformations} */
         function drawGrid(x, y, xLen = gridcellDim, yLen = gridcellDim) {
@@ -84,12 +133,12 @@ self.onmessage = function (e) {
     
     const context 
         = grid_view.draw({
-            hostContext: e.data.hostContext,
             context: e.data.canvas.getContext('2d'),
             options: {
                 grid: {
                     GRIDCELL_DIM: e.data.grid.GRIDCELL_DIM,
-                    DPR: e.data.grid.DPR
+                    DPR: e.data.grid.DPR,
+                    isSkewed: e.data.grid.isSkewed
                 }
             }
         });
@@ -98,5 +147,7 @@ self.onmessage = function (e) {
 
     // DEV_NOTE # send ImageBitmap to the main thread
     self.postMessage({ bitmap }, [bitmap]);
+
+    /* self.terminate() */
     
 }

@@ -22,11 +22,11 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
         ;
         document.body.children.stage?.add([
             new HTMLCanvas.ViewGroup.Layer({
-                name: userConfigs.grid.name, hidden: !true, overrideContext: '2d'
+                name: userConfigs.grid.name, hidden: !true, overrideContext: '2d', isSkewed: {sign: -1}
             })
             ,
             new HTMLCanvas.ViewGroup.Layer({
-                name: 'grid.bitmaprenderer', hidden: !true, overrideContext: 'bitmaprenderer'
+                name: 'grid.bitmaprenderer', hidden: !true, overrideContext: 'bitmaprenderer',  isSkewed: {sign: -1}
             })
             ,
             svgContainer
@@ -53,7 +53,8 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
                                                     canvas: offscreenGrid, 
                                                     grid: { 
                                                         GRIDCELL_DIM: stage.grid.GRIDCELL_DIM, 
-                                                        DPR: window.devicePixelRatio 
+                                                        DPR: window.devicePixelRatio,
+                                                        isSkewed: stage.layers.grid.isSkewed
                                                     }
                                                 }
                                                     , [ offscreenGrid]
@@ -72,13 +73,13 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
                                                      * .. the method called does itself automatically "consume" the `ImageBitmap`, meaning ownership is transferred, and the `ImageBitmap` is no longer valid after the call
                                                      */
                                                     let HOVER_ME_1;
-                                                    stage.layers['grid.bitmaprenderer'].getContext('bitmaprenderer').transferFromImageBitmap(e.data.bitmap)
-                                                    
-                                                    transformSVG({HTMLCanvas, XMLSVG, parent: svgContainer}) ;
-
-                                                    worker$offscreenGrid.terminate();
+                                                    if ( !Boolean( stage.layers['grid.bitmaprenderer'].getContext('bitmaprenderer').transferFromImageBitmap(e.data.bitmap) ) ) {
+                                                        e.currentTarget.terminate();
+                                                    }
 
                                                 });
+
+                                                transformSVG({HTMLCanvas, XMLSVG, parent: svgContainer}) ;
 
                                     break;
 
