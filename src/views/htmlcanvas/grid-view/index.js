@@ -25,6 +25,14 @@ export class grid_view {
         /** {@link https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Transformations} */
         function drawGrid(x, y, xLen = gridcellDim, yLen = gridcellDim) {
 
+            if (options.dotted){
+                const improveVisibility = (dot)=> dot = dot*stage.grid.GRIDCELL_DIM;
+                [xLen, yLen] = [1/gridcellDim, 1/gridcellDim].map(improveVisibility)
+
+            } else {
+                [xLen, yLen] = [1*gridcellDim, 1*gridcellDim]
+            }
+
             context.beginPath();
             
             if (!canvas.isSkewed) {

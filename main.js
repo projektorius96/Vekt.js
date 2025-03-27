@@ -22,7 +22,7 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
         ;
         document.body.children.stage?.add([
             new HTMLCanvas.ViewGroup.Layer({
-                name: 'grid'
+                name: userConfigs.grid.name
             })
             ,
             svgContainer

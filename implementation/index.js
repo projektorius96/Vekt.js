@@ -14,10 +14,12 @@ export
             }
             ,
             grid : {
+                name: 'grid',
                 hidden: !true,
+                dotted: !true,
                 lineWidth: 1,
                 strokeStyle: 'grey',
-                opacity: 0.25
+                opacity: 1
             }
         }
         ;
