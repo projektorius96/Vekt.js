@@ -16,8 +16,9 @@ export class grid_view {
             gridcellMatrix = setRange(0, gridcellDim, context.canvas.width)
             ;
         
-        context.setTransform(...[1, 0, 0, 1, 0, 0].map((abcdef)=>abcdef = abcdef*devicePixelRatio));
+        context.setTransform(devicePixelRatio, 0, 0, devicePixelRatio, 0, 0);
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+        
         
         /** {@link https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Transformations} */
         function drawGrid(x, y, xLen = gridcellDim, yLen = gridcellDim) {
@@ -41,7 +42,7 @@ export class grid_view {
         }
 
         let
-            divisorX = Math.ceil( stage.clientWidth  / gridcellDim )
+            divisorX = Math.ceil( stage.clientWidth / gridcellDim )
             ,
             divisorY = Math.ceil( stage.clientHeight / gridcellDim )
         ;

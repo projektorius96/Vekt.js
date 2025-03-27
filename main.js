@@ -46,7 +46,7 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
                                             HTMLCanvas.Views.Grid.draw({
                                                 context, 
                                                 options: {
-                                                    dotted: true,
+                                                    dotted: userConfigs.grid.dotted,
                                                     lineWidth: 1,
                                                 }}
                                             )
