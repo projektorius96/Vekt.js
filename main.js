@@ -13,7 +13,7 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
 
     document.body.appendChild(
         new HTMLCanvas.ViewGroup.Stage({
-                ...userConfigs.canvas
+            ...userConfigs.canvas
         })
     );
 
@@ -22,11 +22,7 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
         ;
         document.body.children.stage?.add([
             new HTMLCanvas.ViewGroup.Layer({
-                name: userConfigs.grid.name, hidden: !true, overrideContext: '2d'
-            })
-            ,
-            new HTMLCanvas.ViewGroup.Layer({
-                name: 'grid.bitmaprenderer', hidden: !true, overrideContext: 'bitmaprenderer'
+                name: userConfigs.grid.name, hidden: !true
             })
             ,
             svgContainer
@@ -40,45 +36,21 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
                 .init({stage})
                     .on((context)=>{
 
-                        if ( context instanceof (CanvasRenderingContext2D || ImageBitmapRenderingContext) ) {
+                        if ( context instanceof CanvasRenderingContext2D ) {
                                                                 
                                 switch (context.canvas.name) {
                 
                                     case stage.layers.grid.name :
 
-                                        const offscreenGrid = new OffscreenCanvas(context.canvas.width, context.canvas.height);
-                                            const worker$offscreenGrid = new Worker(`.${HTMLCanvas.Views.Grid.getNamespace()}`, { type: 'module' })
-                                                worker$offscreenGrid
-                                                .postMessage({
-                                                    canvas: offscreenGrid, 
-                                                    grid: { 
-                                                        GRIDCELL_DIM: stage.grid.GRIDCELL_DIM, 
-                                                        DPR: window.devicePixelRatio 
-                                                    }
-                                                }
-                                                    , [ offscreenGrid]
-                                                )
-
-                                                worker$offscreenGrid.addEventListener(EVENTS.message, (e)=>{
-                                                    
-                                                    // context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-                                                    // context.drawImage(e.data.bitmap, 0, 0, context.canvas.width, context.canvas.height);
-                                                    // e.data.bitmap.close();
-
-                                                    // ALTERNATIVELY:..
-
-                                                    /**
-                                                     * > NOTE: you do not need to call `close()` on the `ImageBitmap` instance: whenever you call transferFromImageBitmap(), browser automatically does free the resources,..
-                                                     * .. the method called does itself automatically "consume" the `ImageBitmap`, meaning ownership is transferred, and the `ImageBitmap` is no longer valid after the call
-                                                     */
-                                                    let HOVER_ME_1;
-                                                    stage.layers['grid.bitmaprenderer'].getContext('bitmaprenderer').transferFromImageBitmap(e.data.bitmap)
-                                                    
-                                                    transformSVG({HTMLCanvas, XMLSVG, parent: svgContainer}) ;
-
-                                                    worker$offscreenGrid.terminate();
-
-                                                });
+                                        if (
+                                            HTMLCanvas.Views.Grid.draw({
+                                                context, 
+                                                options: {
+                                                    dotted: true,
+                                                    lineWidth: 1,
+                                                }}
+                                            )
+                                        ) transformSVG({HTMLCanvas, XMLSVG, parent: svgContainer}) ;
 
                                     break;
 

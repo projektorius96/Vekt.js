@@ -2,12 +2,6 @@ import { setRange } from "../modules/maths/index.js";
 
 export class grid_view {
 
-    static getNamespace(){
-        return (
-            (new URL(import.meta.url)).pathname
-        )
-    }
-
     /**
      * The `default.draw` static method takes single `Object` as its input whose properties are as follows:
      * @param {HTMLCanvasElement} `canvas` - a reference to `canvas` (_a.k.a. "Layer"_)
@@ -17,19 +11,19 @@ export class grid_view {
     static draw({context, options}){
 
         let 
-            gridcellDim = /* stage.grid.GRIDCELL_DIM */options.grid.GRIDCELL_DIM
+            gridcellDim = stage.grid.GRIDCELL_DIM
             ,
             gridcellMatrix = setRange(0, gridcellDim, context.canvas.width)
             ;
         
-        context.setTransform(...[1, 0, 0, 1, 0, 0].map((abcdef)=>abcdef = abcdef*options.grid.DPR));
+        context.setTransform(...[1, 0, 0, 1, 0, 0].map((abcdef)=>abcdef = abcdef*devicePixelRatio));
         context.clearRect(0, 0, context.canvas.width, context.canvas.height);
         
         /** {@link https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Transformations} */
         function drawGrid(x, y, xLen = gridcellDim, yLen = gridcellDim) {
 
             if (options.dotted){
-                const improveVisibility = (dot)=> dot = dot*options.grid.GRIDCELL_DIM/* stage.grid.GRIDCELL_DIM */;
+                const improveVisibility = (dot)=> dot = dot*stage.grid.GRIDCELL_DIM;
                 [xLen, yLen] = [1/gridcellDim, 1/gridcellDim].map(improveVisibility)
 
             } else {
@@ -47,9 +41,9 @@ export class grid_view {
         }
 
         let
-            divisorX = Math.ceil( /* stage */context.canvas.width/* clientWidth  */ / gridcellDim )
+            divisorX = Math.ceil( stage.clientWidth  / gridcellDim )
             ,
-            divisorY = Math.ceil( /* stage */context.canvas.height/* clientHeight */ / gridcellDim )
+            divisorY = Math.ceil( stage.clientHeight / gridcellDim )
         ;
         ;[...new Array(divisorY)].map((v, row)=>{
 
@@ -72,31 +66,8 @@ export class grid_view {
 
         });
 
-
-
         return context;
     
     }
 
-}
-
-self.onmessage = function (e) {
-    
-    const context 
-        = grid_view.draw({
-            hostContext: e.data.hostContext,
-            context: e.data.canvas.getContext('2d'),
-            options: {
-                grid: {
-                    GRIDCELL_DIM: e.data.grid.GRIDCELL_DIM,
-                    DPR: e.data.grid.DPR
-                }
-            }
-        });
-
-    const bitmap = context.canvas.transferToImageBitmap();
-
-    // DEV_NOTE # send ImageBitmap to the main thread
-    self.postMessage({ bitmap }, [bitmap]);
-    
 }

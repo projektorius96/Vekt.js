@@ -7,7 +7,6 @@ customElements.define(layer_view, class extends HTMLCanvasElement {
 
         if ( setStyling.call( super() , {opacity, hidden} ) ) {
 
-            this.overrideContext = overrideContext || '2d'
             this.name = name;
                 this.id = this.name;
             this.isSkewed = isSkewed;
@@ -15,7 +14,6 @@ customElements.define(layer_view, class extends HTMLCanvasElement {
 
         }
 
-        Object.assign(this, {overrideContext})
         return this;
 
     }
@@ -25,7 +23,7 @@ customElements.define(layer_view, class extends HTMLCanvasElement {
         const
             canvasLayer = this
             ,
-            canvasLayerContext = canvasLayer.getContext(this.overrideContext || '2d')
+            canvasLayerContext = canvasLayer.getContext('2d')
             ;
         
         Object.assign(canvasLayer, Object.freeze({

@@ -20,7 +20,7 @@ export class HTMLCanvas {
                         .map(canvas => {
                             if (canvas instanceof HTMLCanvasElement) {                            
                                 return (
-                                    canvas = canvas.getContext(canvas.overrideContext)
+                                    canvas = canvas.getContext('2d')
                                 );
                             }
                         })
