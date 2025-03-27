@@ -20,9 +20,4 @@ customElements.define(stage_view, class extends HTMLDivElement {
 
     }
 
-    connectedCallback(){
-        this.setAttribute('readonly:width', Math.floor(this.clientWidth * window.devicePixelRatio))  ;
-        this.setAttribute('readonly:height', Math.floor(this.clientHeight * window.devicePixelRatio));
-    }
-
 }, {extends: 'div'})

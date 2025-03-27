@@ -14,10 +14,12 @@ export
             }
             ,
             grid : {
+                name: 'grid',
                 hidden: !true,
+                dotted: !true,
                 lineWidth: 1,
                 strokeStyle: 'grey',
-                opacity: 0.25
+                opacity: 1
             }
         }
         ;
@@ -125,7 +127,7 @@ export const transformSVG = ({HTMLCanvas, XMLSVG, parent}) =>{
                                     );
                                     
                                     // DEV_NOTE (!) # if you really want to see view (shape), make sure you have scaled it to some extent...
-                                    matrix.scaleSelf(stage.grid.GRIDCELL_DIM * ( 1 / Math.cos( Math.PI/4 ) ) , stage.grid.GRIDCELL_DIM * ( 1 / Math.cos( Math.PI/4 ) ));
+                                    matrix.scaleSelf(stage.grid.GRIDCELL_DIM *  ( 1 / Math.cos( Math.PI/4 ) ) , stage.grid.GRIDCELL_DIM * ( 1 / Math.cos( Math.PI/4 ) ));
                                 
                                 return matrix;
     

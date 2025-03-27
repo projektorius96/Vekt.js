@@ -1,7 +1,7 @@
 import "./DOMutils.js";
 import { stage_view } from './stage-view/index.js';
 import { layer_view } from './layer-view/index.js';
-import { grid_view } from './grid-view/index.js'
+import { grid_view } from './grid-view/index.js';
 import { degToRad, radToDeg, setTransform, setRange } from "./modules/maths/index.js";
 
 export class HTMLCanvas {
@@ -33,7 +33,7 @@ export class HTMLCanvas {
          * > This function expression works as a guard against end-user or developer with limited knowledge of Canvas API
          * 
          * @param {Number} num - an "odd" number that is made to be "even", or even number that is left out as is, i.e. "even"
-         * @returns {Number} makes sure the modified `stage.grid.GRIDCELL_DIM` is always even, this makes sure the shapes (a.k.a. views) are well centred within a _"grid-first"_ coordinate system
+         * @returns {Number} makes sure the modified `stage.grid.GRIDCELL_DIM` is always even, this prevents sub-pixel rendering in grid-first coordinate system {@link https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#avoid_floating-point_coordinates_and_use_integers_instead}
         */
         static #evenNumber = (num = 0) => {
             const rounded = Math.ceil(num);
@@ -51,9 +51,9 @@ export class HTMLCanvas {
             const
                 GRIDCELL_DIM = ( stage.clientWidth / this.#evenNumber( stage.scale ) )
                 ,
-                divisorX = Math.ceil( stage?.clientWidth / GRIDCELL_DIM )
+                divisorX = Math.ceil( stage.clientWidth / GRIDCELL_DIM )
                 ,
-                divisorY = Math.ceil( stage?.clientHeight / GRIDCELL_DIM )
+                divisorY = Math.ceil( stage.clientHeight / GRIDCELL_DIM )
                 ,
                 X_IN_MIDDLE = ( ( divisorX * GRIDCELL_DIM ) / 2 )
                 ,  
@@ -79,8 +79,8 @@ export class HTMLCanvas {
                 Array.from( stage.children ).forEach((layer)=>{
                     
                     if (layer instanceof HTMLCanvasElement) {
-                        layer.width = stage?.clientWidth * window.devicePixelRatio;
-                        layer.height = stage?.clientHeight * window.devicePixelRatio;
+                        layer.width = stage.clientWidth * window.devicePixelRatio;
+                        layer.height = stage.clientHeight * window.devicePixelRatio;
                     }
 
                 });
@@ -103,7 +103,7 @@ export class HTMLCanvas {
     }
     
     static Views = {
-        Grid: grid_view
+        Grid: grid_view,
     }
 
     static Helpers = {
