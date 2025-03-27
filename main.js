@@ -22,7 +22,7 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
         ;
         document.body.children.stage?.add([
             new HTMLCanvas.ViewGroup.Layer({
-                name: userConfigs.grid.name
+                name: userConfigs.grid.name, hidden: !true
             })
             ,
             svgContainer
@@ -37,16 +37,14 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
                     .on((context)=>{
 
                         if ( context instanceof CanvasRenderingContext2D ) {
-                
-                            const canvas = context.canvas;
-                                                
-                                switch (canvas.name) {
+                                                                
+                                switch (context.canvas.name) {
                 
                                     case stage.layers.grid.name :
 
                                         if (
                                             HTMLCanvas.Views.Grid.draw({
-                                                canvas,
+                                                context,
                                                 options: {
                                                 /* === DEVELOPER IS WELCOME TO MODIFY: === */
                                                     ...userConfigs.grid
