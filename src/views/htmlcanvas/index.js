@@ -18,9 +18,9 @@ export class HTMLCanvas {
                 return (
                     this.#getIterable(stage.layers)
                         .map(canvas => {
-                            if (canvas instanceof HTMLCanvasElement) {
+                            if (canvas instanceof HTMLCanvasElement) {                            
                                 return (
-                                    canvas = canvas.getContext('2d')
+                                    canvas = canvas.getContext(canvas.overrideContext)
                                 );
                             }
                         })

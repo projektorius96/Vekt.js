@@ -14,7 +14,7 @@ export class grid_view {
      * @param {Object} `options`           - options you have passed to shape's current `context` of the current `canvas` reference
      * @returns {CanvasRenderingContext2D} `context` - the modified `context` with a `grid` view "painted" on the `<canvas>` hosted bitmap
     */
-    static draw({hostContext, context, options}){
+    static draw({context, options}){
 
         let 
             gridcellDim = /* stage.grid.GRIDCELL_DIM */options.grid.GRIDCELL_DIM
@@ -94,11 +94,9 @@ self.onmessage = function (e) {
             }
         });
 
-    /* console.log(context); */// [PASSING]
-
     const bitmap = context.canvas.transferToImageBitmap();
 
-    // Send ImageBitmap to main thread
-    self.postMessage({ bitmap }, [bitmap]); // Transfer ownership
+    // DEV_NOTE # send ImageBitmap to the main thread
+    self.postMessage({ bitmap }, [bitmap]);
     
 }

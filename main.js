@@ -22,12 +22,16 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
         ;
         document.body.children.stage?.add([
             new HTMLCanvas.ViewGroup.Layer({
-                name: userConfigs.grid.name, hidden: !true
+                name: userConfigs.grid.name, hidden: !true, overrideContext: '2d'
+            })
+            ,
+            new HTMLCanvas.ViewGroup.Layer({
+                name: 'grid.bitmaprenderer', hidden: !true, overrideContext: 'bitmaprenderer'
             })
             ,
             svgContainer
         ])
-
+        
     if ( HTMLCanvas.init({stage}) ) {
 
         window.on(EVENTS.resize, ()=>{
@@ -36,7 +40,7 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
                 .init({stage})
                     .on((context)=>{
 
-                        if ( context instanceof CanvasRenderingContext2D ) {
+                        if ( context instanceof (CanvasRenderingContext2D || ImageBitmapRenderingContext) ) {
                                                                 
                                 switch (context.canvas.name) {
                 
@@ -56,10 +60,19 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
                                                 )
 
                                                 worker$offscreenGrid.addEventListener(EVENTS.message, (e)=>{
-                                                    // Draw it back to the visible canvas
-                                                    context.clearRect(0, 0, context.canvas.width, context.canvas.height);
-                                                    context.drawImage(e.data.bitmap, 0, 0, context.canvas.width, context.canvas.height);
-                                                    e.data.bitmap.close();
+                                                    
+                                                    // context.clearRect(0, 0, context.canvas.width, context.canvas.height);
+                                                    // context.drawImage(e.data.bitmap, 0, 0, context.canvas.width, context.canvas.height);
+                                                    // e.data.bitmap.close();
+
+                                                    // ALTERNATIVELY:..
+
+                                                    /**
+                                                     * > NOTE: you do not need to call `close()` on the `ImageBitmap` instance: whenever you call transferFromImageBitmap(), browser automatically does free the resources,..
+                                                     * .. the method called does itself automatically "consume" the `ImageBitmap`, meaning ownership is transferred, and the `ImageBitmap` is no longer valid after the call
+                                                     */
+                                                    let HOVER_ME_1;
+                                                    stage.layers['grid.bitmaprenderer'].getContext('bitmaprenderer').transferFromImageBitmap(e.data.bitmap)
 
                                                 })
 
