@@ -26,10 +26,10 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
             })
             ,
             new HTMLCanvas.ViewGroup.Layer({
-                name: 'grid.bitmaprenderer', hidden: !true, overrideContext: 'bitmaprenderer',  isSkewed: {sign: -1}
+                name: 'grid.bitmaprenderer', hidden: !true, overrideContext: 'bitmaprenderer'
             })
-            ,
-            svgContainer
+            /* ,
+            svgContainer */
         ])
         
     if ( HTMLCanvas.init({stage}) ) {
@@ -62,7 +62,7 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
                                     case stage.layers.grid.name :
 
                                         // Create a new OffscreenCanvas with new size
-                                        let offscreen = new OffscreenCanvas(stage.layers.grid.width, stage.layers.grid.height);
+                                        let offscreen = new OffscreenCanvas(1, 1);
 
                                         // Transfer the new OffscreenCanvas to the worker
                                         worker.postMessage({ 
@@ -97,12 +97,12 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
                                                         try {
                                                             stage.layers['grid.bitmaprenderer'].getContext('bitmaprenderer').transferFromImageBitmap(e.data.resizedBitmap)
                                                         } catch (error) {
-                                                            // DEV_NOTE # we deliberately suppress console
-                                                            /* if (error.name === 'InvalidStateError') {
-                                                                console.info("ImageBitmap is detached.");
-                                                            } else {
-                                                                console.warn("An unexpected error occurred:", error);
-                                                            } */
+                                                            // // DEV_NOTE # we deliberately suppress console, however expect 'InvalidStateError' whatsoever
+                                                            // if (error.name === 'InvalidStateError') {
+                                                            //     console.info("ImageBitmap is detached.");
+                                                            // } else {
+                                                            //     console.warn("An unexpected error occurred:", error);
+                                                            // }
                                                         }
                                                         
                                                     }

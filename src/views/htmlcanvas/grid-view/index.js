@@ -14,7 +14,7 @@ export class grid_view {
      * @param {Object} `options`           - options you have passed to shape's current `context` of the current `canvas` reference
      * @returns {CanvasRenderingContext2D} `context` - the modified `context` with a `grid` view "painted" on the `<canvas>` hosted bitmap
     */
-    static draw({context, options}){
+    static draw({context, options}){        
 
         let 
             gridcellDim = /* stage.grid.GRIDCELL_DIM */options.grid.GRIDCELL_DIM
@@ -27,44 +27,58 @@ export class grid_view {
          */
         if (options.grid.isSkewed){
 
+            /* console.log(context.canvas.width, options.resize.width); */
+            
             context.setTransform(options.grid.DPR, 0, 0, options.grid.DPR, 0, 0);
             context.clearRect(0, 0, context.canvas.width, context.canvas.height);
     
             let sign = options.grid.isSkewed.sign || -1;
             let { a, b, c, d, e, f } = context.getTransform();
                 let commonDivisor = 2;
-                c = sign * 1  * options.grid.DPR;
-                e = -1 * context.canvas.width/commonDivisor * options.grid.DPR
+                c = sign * 1;
+                // e = -1 * options.resize.width/commonDivisor
+                // Object.assign(options.grid.isSkewed, {
+                //     y: Math.sin( degToRad( (90 / commonDivisor) ) )
+                // })
+            if (options.grid.isSkewed.sign === -1){
+                e = -1 * options.resize.width/commonDivisor
                 Object.assign(options.grid.isSkewed, {
                     y: Math.sin( degToRad( (90 / commonDivisor) ) )
                 })
-            context.setTransform(a, b, c, d, e, f);
+                context.setTransform(...[a, b, c, d, 0, f].map((each)=>each = each * options.grid.DPR));
+            } else {
+                e = 1 * options.resize.height/commonDivisor
+                Object.assign(options.grid.isSkewed, {
+                    y: Math.sin( degToRad( (90 / commonDivisor) ) )
+                })
+                context.setTransform(...[a, b, c, d, -1 * (options.resize.height/2) , f].map((each)=>each = each * options.grid.DPR));
+            }
     
-            /**
-             * @algorithm 3Din2D (part 2)
-             * @mediaqueries
-             */
-            if (context.canvas.width <= context.canvas.height && sign > 0) context.translate(-1 * context.canvas.width/4, 0) ;
-            if (context.canvas.width <= context.canvas.height && sign < 0) context.translate(+1 * context.canvas.width/4, 0) ;
+            // /**
+            //  * @algorithm 3Din2D (part 2)
+            //  * @mediaqueries
+            //  */
+            // if (context.canvas.width <= context.canvas.height && sign > 0) context.translate(-1 * context.canvas.width/4, 0) ;
+            // if (context.canvas.width <= context.canvas.height && sign < 0) context.translate(+1 * context.canvas.width/4, 0) ;
     
            /*  context.save() */
     
-            if (options.overrides?.transform){
-                if (options.overrides.transform?.translation){
-                    let { x, y } = options.overrides.transform.translation;
-                    context.translate(x, y)
-                }
-                if (options.overrides.transform?.angle){
-                    context.rotate(options.overrides.transform.angle)
-                    context.currentAngle = options.overrides.transform.angle;
-                }
-                if (options.overrides.transform?.scale){
-                    let { x, y } = options.overrides.transform.scale;
-                    context.scale(x, y);
-                }
-            }
+            // if (options.overrides?.transform){
+            //     if (options.overrides.transform?.translation){
+            //         let { x, y } = options.overrides.transform.translation;
+            //         context.translate(x, y)
+            //     }
+            //     if (options.overrides.transform?.angle){
+            //         context.rotate(options.overrides.transform.angle)
+            //         context.currentAngle = options.overrides.transform.angle;
+            //     }
+            //     if (options.overrides.transform?.scale){
+            //         let { x, y } = options.overrides.transform.scale;
+            //         context.scale(x, y);
+            //     }
+            // }
     
-            } else {
+            } else {                
     
                 /**
                  * @default
@@ -79,15 +93,23 @@ export class grid_view {
 
             if (options.dotted){
                 const improveVisibility = (dot)=> dot = dot*options.grid.GRIDCELL_DIM/* stage.grid.GRIDCELL_DIM */;
-                [xLen, yLen] = [1/gridcellDim, 1/gridcellDim].map(improveVisibility)
+                [xLen, yLen] = [1/gridcellDim, 1/gridcellDim*1].map(improveVisibility)
 
             } else {
-                [xLen, yLen] = [1*gridcellDim, 1*gridcellDim]
+                [xLen, yLen] = [1*gridcellDim, 1*gridcellDim*1]
             }
 
             context.beginPath();
+
+            if (options.grid.isSkewed){
+
+                context.rect(x, y/options.grid.DPR, xLen, yLen/options.grid.DPR);
             
-            context.rect(x, y, xLen, yLen);
+            } else {
+                context.rect(x, y, xLen, yLen);
+            }
+            
+            /* context.rect(x, y/options.grid.DPR, xLen, yLen/options.grid.DPR); */
             context.kind = options?.kind || 'grid';
             context.lineWidth = options?.lineWidth || 1;
             context.strokeStyle = options?.strokeStyle || 1;
@@ -140,6 +162,7 @@ self.onmessage = function (e) {
         grid_view.draw({
             context: e.data.canvas.getContext('2d'),
             options: {
+                resize: e.data.resize,
                 grid: {
                     ...e.data.grid
                 }
@@ -148,7 +171,7 @@ self.onmessage = function (e) {
 
         let resizedBitmap = e.data.canvas.transferToImageBitmap();
 
-        // // DEV_NOTE # send ImageBitmap to the main thread
+        // // // DEV_NOTE # send ImageBitmap to the main thread
         self.postMessage({ resizedBitmap } , [ resizedBitmap ]);
 
     }
