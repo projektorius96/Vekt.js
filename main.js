@@ -35,8 +35,7 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
     if ( HTMLCanvas.init({stage}) ) {
 
         /* === WORKER === */
-        const offscreenGrid = new OffscreenCanvas(stage.clientWidth, stage.clientHeight);
-        let worker$offscreenGrid = new Worker(`.${HTMLCanvas.Views.Grid.getNamespace()}`, { type: 'module' })
+        let worker = new Worker(`.${HTMLCanvas.Views.Grid.getNamespace()}`, { type: 'module' })
             // worker$offscreenGrid
             // .postMessage({
             //     canvas: offscreenGrid, 
@@ -62,20 +61,25 @@ document.addEventListener(EVENTS.DOMContentLoaded, ()=>{
                 
                                     case stage.layers.grid.name :
 
-                                                worker$offscreenGrid.postMessage({
-                                                    resize: {
-                                                        width: stage.layers.grid.width,
-                                                        height: stage.layers.grid.height,
-                                                    }
-                                                    ,
-                                                    grid: { 
-                                                        isSkewed: stage.layers.grid.isSkewed,
-                                                        GRIDCELL_DIM: stage.grid.GRIDCELL_DIM, 
-                                                        DPR: window.devicePixelRatio
-                                                    }
-                                                })
+                                        // Create a new OffscreenCanvas with new size
+                                        let offscreen = new OffscreenCanvas(stage.layers.grid.width, stage.layers.grid.height);
 
-                                                worker$offscreenGrid.addEventListener(EVENTS.message, (e)=>{
+                                        // Transfer the new OffscreenCanvas to the worker
+                                        worker.postMessage({ 
+                                            canvas: offscreen, 
+                                            resize: {
+                                                width: stage.layers.grid.width,
+                                                height: stage.layers.grid.height,
+                                            }
+                                            ,
+                                            grid: { 
+                                                isSkewed: stage.layers.grid.isSkewed,
+                                                GRIDCELL_DIM: stage.grid.GRIDCELL_DIM, 
+                                                DPR: window.devicePixelRatio
+                                            }
+                                        }, [offscreen]);
+
+                                                worker.addEventListener(EVENTS.message, (e)=>{
 
                                                     // context.clearRect(0, 0, context.canvas.width, context.canvas.height);
                                                     // context.drawImage(e.data.bitmap, 0, 0, context.canvas.width, context.canvas.height);

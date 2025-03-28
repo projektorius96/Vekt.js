@@ -132,12 +132,13 @@ export class grid_view {
 /* let offscreenCtx; */
 self.onmessage = function (e) {    
 
-    if (e.data.resize){
-        
-        const offscreen = new OffscreenCanvas(e.data.resize.width, e.data.resize.height);
+    if (e.data){
+
+        e.data.canvas.width = e.data.resize.width;
+        e.data.canvas.height = e.data.resize.height;
         
         grid_view.draw({
-            context: offscreen.getContext('2d'),
+            context: e.data.canvas.getContext('2d'),
             options: {
                 grid: {
                     ...e.data.grid
@@ -145,7 +146,7 @@ self.onmessage = function (e) {
             }
         });
 
-        let resizedBitmap = offscreen.transferToImageBitmap();
+        let resizedBitmap = e.data.canvas.transferToImageBitmap();
 
         // // DEV_NOTE # send ImageBitmap to the main thread
         self.postMessage({ resizedBitmap } , [ resizedBitmap ]);
