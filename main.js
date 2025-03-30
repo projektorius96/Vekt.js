@@ -2,6 +2,8 @@ import { userConfigs, initSVG, transformSVG, COLORS, SHAPE_TYPE, UI_EVENTS } fro
 import { HTMLCanvas, XMLSVG } from './src/views/index.js';
 import package_json from './package.json' with { type: 'json' };
 
+import { initGUI } from './implementation/GUI.js';
+
 document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
 
     document.title = package_json.name;
@@ -24,6 +26,12 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
         ])
         
     if ( HTMLCanvas.init({stage}) ) {
+
+        /* === GUI === */
+
+            initGUI({container: stage.parentElement});
+
+        /* === GUI === */
 
         window.on(UI_EVENTS.resize, ()=>{
 

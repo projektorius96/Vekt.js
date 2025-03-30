@@ -22,7 +22,7 @@ export
             stage : {
                 /* id: 'stage',  */// (default)
                 container: document.body,
-                scale: 20,
+                scale: 30,
             }
             ,
             grid : {
@@ -71,7 +71,7 @@ export const initSVG = ({XMLSVG, HTMLCanvas}) => {
                         id: ENUM.svg_path.replace("_", "-"),
                         hidden: !true,
                         points: [
-                            ...diffShape({resource: SHAPES.smooth_wave, Converters, setRangeFn: setRange})
+                            ...diffShape({resource: { name: SHAPES.smooth_wave }, Converters, setRangeFn: setRange})
                         ],
                         strokeWidth: 3,
                         fill: COLORS.green,

@@ -1,3 +1,5 @@
+/* import { GUI } from './GUI.js'; */
+
 /**
  * @example
  * ENUMS.give; // 'give'
@@ -32,7 +34,9 @@ export function diffShape({resource, setRangeFn, Converters}) {
         STEP_BASIS = 1
         ;
 
+
     /* === GUI === */
+        // NEXT_GOAL # will be checking `waveConfig.prop`'s value against GUI-drivern Observable store 
         const waveConfig = {
             periods : 1
             ,
@@ -42,7 +46,7 @@ export function diffShape({resource, setRangeFn, Converters}) {
         }
     /* === GUI === */
 
-    switch (resource) {
+    switch (resource.name) {
         case 'circle' :
             return (
                 setRangeFn(0, STEP_BASIS, TAU*2).map((deg)=>{
