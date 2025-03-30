@@ -1,4 +1,16 @@
-import { diffShape, ENUM } from "./primitives.js";
+import { diffPoints, ENUM } from "./primitives.js";
+
+export {
+    diffPoints
+}
+
+export const waveConfig = {
+    periods : 1
+    ,
+    frequency: 3
+    ,
+    amplitude : 4
+}
 
 /**
  * @alias
@@ -71,7 +83,14 @@ export const initSVG = ({XMLSVG, HTMLCanvas}) => {
                         id: ENUM.svg_path.replace("_", "-"),
                         hidden: !true,
                         points: [
-                            ...diffShape({resource: { name: SHAPES.smooth_wave }, Converters, setRangeFn: setRange})
+                            ...diffPoints({
+                                Converters, 
+                                setRangeFn: setRange,
+                                resource: { 
+                                    name: SHAPES.smooth_wave, 
+                                    waveConfig 
+                                }
+                            })
                         ],
                         strokeWidth: 3,
                         fill: COLORS.green,

@@ -1,12 +1,18 @@
-import { userConfigs, initSVG, transformSVG, COLORS, SHAPE_TYPE, UI_EVENTS } from './implementation/index.js';
+import { userConfigs, initSVG, transformSVG, diffPoints, waveConfig, COLORS, SHAPE_TYPE, UI_EVENTS } from './implementation/index.js';
 import { HTMLCanvas, XMLSVG } from './src/views/index.js';
 import package_json from './package.json' with { type: 'json' };
 
-import { initGUI } from './implementation/GUI.js';
+import { initGUIRange } from './implementation/GUI.js';
 
 document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
 
     document.title = package_json.name;
+
+    const 
+        { Converters } = HTMLCanvas.Helpers.Trigonometry
+        ,
+        { setRange } = HTMLCanvas.Helpers.Trigonometry
+        ;
 
     document.body.appendChild(
         new HTMLCanvas.ViewGroup.Stage({
@@ -29,8 +35,30 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
 
         /* === GUI === */
 
-            initGUI({container: stage.parentElement});
-
+                const gui = initGUIRange({container: stage.parentElement});
+                    gui.wave.frequency.element.on('input', function(){
+                        /* console.log( Number(this.value) ) */// # [PASSING]
+                        /* console.log(gui.wave.frequency.args) */// # [PASSING]
+                        if ( window.dispatchEvent(new Event(UI_EVENTS.resize)) ){
+                            /* console.log(document.querySelector('svg-container')) */// # [PASSING]
+                            document.querySelector('path').setPoints([
+                                ...diffPoints({
+                                    Converters, 
+                                    setRangeFn: setRange,
+                                    resource: { 
+                                        name: 'smooth_wave', 
+                                        waveConfig: {
+                                            ...waveConfig,
+                                            frequency: Number( this.value )
+                                        } 
+                                    }
+                                })
+                            ])
+                            
+                        }
+                        ;
+                    }); gui.wave.frequency.element.dispatchEvent(new Event(UI_EVENTS.input))
+    
         /* === GUI === */
 
         window.on(UI_EVENTS.resize, ()=>{

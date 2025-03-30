@@ -1,5 +1,3 @@
-/* import { GUI } from './GUI.js'; */
-
 /**
  * @example
  * ENUMS.give; // 'give'
@@ -24,7 +22,7 @@ let HOVER_ME_0;
  * @param  {Function} `options.setRangeFn`        - function body passed
  * @return {Object}   `options.Converters`        - forwared `options.Converters` object, originally defined within "`HTMLCanvas`" named module export
  */
-export function diffShape({resource, setRangeFn, Converters}) {
+export function diffPoints({resource, setRangeFn, Converters}) {
 
     const 
         TAU = 360
@@ -34,18 +32,7 @@ export function diffShape({resource, setRangeFn, Converters}) {
         STEP_BASIS = 1
         ;
 
-
-    /* === GUI === */
-        // NEXT_GOAL # will be checking `waveConfig.prop`'s value against GUI-drivern Observable store 
-        const waveConfig = {
-            periods : 1
-            ,
-            frequency: 3
-            ,
-            amplitude : 4
-        }
-    /* === GUI === */
-
+    let resultFunc;
     switch (resource.name) {
         case 'circle' :
             return (
@@ -56,6 +43,7 @@ export function diffShape({resource, setRangeFn, Converters}) {
                     }
                 })
             );
+        break;
         case 'square' :
             return (
                 setRangeFn(0, STEP_BASIS*90, TAU*2).map((deg)=>{
@@ -64,8 +52,8 @@ export function diffShape({resource, setRangeFn, Converters}) {
                         y: 1 * Math.sin( Converters.degToRad( deg ) ),
                     }
                 })
-            )
-        ;
+            );
+        break;
         case 'right_triangle' :
             return (
                 setRangeFn(0, STEP_BASIS*270, TAU*2).map((deg)=>{
@@ -74,9 +62,10 @@ export function diffShape({resource, setRangeFn, Converters}) {
                         y: 1 * Math.sin( Converters.degToRad( deg ) ),
                     }
                 })
-            )
-        ;
+            );
+        break;
         case 'isosceles' :
+
             return (
                 setRangeFn(0, STEP_BASIS*300, TAU*2).map((deg)=>{
                     return {
@@ -84,29 +73,40 @@ export function diffShape({resource, setRangeFn, Converters}) {
                         y: 1 * Math.sin( Converters.degToRad( deg ) ),
                     }
                 })
-            )
-        ;
+            );
+
+        break;
         case 'smooth_wave':
-            return (
-                setRangeFn(0, STEP_BASIS*1, TAU * waveConfig.periods).map((deg)=>{
-                    return {
-                        x: 1 * /* Math.cos( */ Converters.degToRad( deg ) /* ) */,
-                        y: (waveConfig.amplitude * SNAP_TO_GRID) * Math.sin( Converters.degToRad( deg )*waveConfig.frequency ),
-                    }
-                })
-            )
-        ;
+                        
+            if (resource.waveConfig){
+                
+                return (
+                    setRangeFn(0, STEP_BASIS*1, TAU * resource.waveConfig.periods).map((deg)=>{
+                        return {
+                            x: 1 * /* Math.cos( */ Converters.degToRad( deg ) /* ) */,
+                            y: (resource.waveConfig.amplitude * SNAP_TO_GRID) * Math.sin( Converters.degToRad( deg )*resource.waveConfig.frequency ),
+                        }
+                    })
+                );
+                
+
+            }
+        break;
+
         case 'triangle_wave':
             // DEV_NOTE # due to way this wrapper is built, to avoid graphical artifacts, please phase horizontally|vertically via `transformSVG` (see `../index.js`)
-            return (
-                setRangeFn(0, STEP_BASIS*90, TAU * waveConfig.periods).map((deg)=>{
-                    return {
-                        x: 1 * /* Math.cos( */ Converters.degToRad( deg ) /* ) */,
-                        y: (waveConfig.amplitude * SNAP_TO_GRID) * Math.sin( Converters.degToRad( deg )*waveConfig.frequency ),
-                    }
-                })
-            )
-        ;
+            if ( resource.waveConfig ){
+
+                return (
+                    setRangeFn(0, STEP_BASIS*90, TAU * resource.waveConfig.periods).map((deg)=>{
+                        return {
+                            x: 1 * /* Math.cos( */ Converters.degToRad( deg ) /* ) */,
+                            y: (resource.waveConfig.amplitude * SNAP_TO_GRID) * Math.sin( Converters.degToRad( deg )*resource.waveConfig.frequency ),
+                        }
+                    })
+                );
+            }
+        break;
     }
 
 }
