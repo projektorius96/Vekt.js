@@ -1,8 +1,9 @@
-import { userConfigs, initSVG, transformSVG, diffPoints, waveConfig, COLORS, SHAPE_TYPE, UI_EVENTS } from './implementation/index.js';
+import { userConfigs, initSVG, transformSVG, diffPoints, COLORS, SHAPE_TYPE, UI_EVENTS } from './implementation/index.js';
 import { HTMLCanvas, XMLSVG } from './src/views/index.js';
 import package_json from './package.json' with { type: 'json' };
 
-import { initGUIRange } from './implementation/GUI.js';
+import { initGUIRange } from './implementation/GUI/index.js';
+import { waveConfig } from './implementation/GUI/index.js';
 
 document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
 
@@ -35,29 +36,7 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
 
         /* === GUI === */
 
-                const gui = initGUIRange({container: stage.parentElement});
-                    gui.wave.frequency.element.on('input', function(){
-                        /* console.log( Number(this.value) ) */// # [PASSING]
-                        /* console.log(gui.wave.frequency.args) */// # [PASSING]
-                        if ( window.dispatchEvent(new Event(UI_EVENTS.resize)) ){
-                            /* console.log(document.querySelector('svg-container')) */// # [PASSING]
-                            document.querySelector('path').setPoints([
-                                ...diffPoints({
-                                    Converters, 
-                                    setRangeFn: setRange,
-                                    resource: { 
-                                        name: 'smooth_wave', 
-                                        waveConfig: {
-                                            ...waveConfig,
-                                            frequency: Number( this.value )
-                                        } 
-                                    }
-                                })
-                            ])
-                            
-                        }
-                        ;
-                    }); gui.wave.frequency.element.dispatchEvent(new Event(UI_EVENTS.input))
+                const gui = initGUIRange({container: stage.parentElement, position: 'right'});
     
         /* === GUI === */
 
@@ -93,6 +72,27 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
                         }
                     
                     });
+                    
+                    gui.wave.frequency.element.on(UI_EVENTS.input, function(){
+                            document.querySelector('path').setPoints([
+                                ...diffPoints({
+                                    Converters, 
+                                    setRangeFn: setRange,
+                                    resource: { 
+                                        name: SHAPE_TYPE.smooth_wave, 
+                                        waveConfig: {
+                                            ...waveConfig,
+                                            frequency: Number( this.value ) || waveConfig.frequency
+                                        } 
+                                    }
+                                })
+                            ]);
+                        ;
+                    });
+
+                    gui.wave.amplitude.element.on(UI_EVENTS.input, function(){
+                        console.log( Number( this.value ) )
+                    })
             
         })
 

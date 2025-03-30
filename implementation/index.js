@@ -1,15 +1,8 @@
 import { diffPoints, ENUM } from "./primitives.js";
+import { waveConfig } from './GUI/index.js'
 
 export {
     diffPoints
-}
-
-export const waveConfig = {
-    periods : 1
-    ,
-    frequency: 3
-    ,
-    amplitude : 4
 }
 
 /**
