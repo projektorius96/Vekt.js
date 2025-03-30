@@ -95,7 +95,7 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
                     });
 
                     gui.wave.amplitude.element.on(UI_EVENTS.input, function(){
-                        
+
                         document.querySelector('path').setPoints([
                             ...diffPoints({
                                 Converters, 
@@ -108,7 +108,7 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
                                         /**
                                          * @override
                                          */
-                                        amplitude: Number( this.value ) || waveConfig.amplitude
+                                        amplitude: Number( this.value )
                                     } 
                                 }
                             })

@@ -5,7 +5,7 @@ export const waveConfig = {
     ,
     frequency: 3
     ,
-    amplitude : 0.1
+    amplitude : -1
 }
 
 export 
@@ -41,7 +41,7 @@ export
                                 min: 1,
                                 max: 60,
                                 step: 1,
-                                value: 1
+                                value: waveConfig.frequency
                             }
                         })
                     )
@@ -49,17 +49,12 @@ export
                     ...Array(
                         amplitudeLabel,
                         new Input({
-                            name: amplitudeLabel.textContent, 
+                            name: amplitudeLabel.textContent,
                             attrs: {
-                                /* DEV_NOTE # to avoid reaching zero, instead of hitting between [1..3], where 2 as 0  */
-                                /* min: 1,
-                                max: 3,
-                                step: 0.1,
-                                value: 2 */
                                 min: -1,
                                 max: 1,
                                 step: 0.1,
-                                value: 0.1
+                                value: waveConfig.amplitude
                             }
                         })
                     )
