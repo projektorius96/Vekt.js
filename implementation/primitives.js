@@ -32,7 +32,6 @@ export function diffPoints({resource, setRangeFn, Converters}) {
         STEP_BASIS = 1
         ;
 
-    let resultFunc;
     switch (resource.name) {
         case 'circle' :
             return (
@@ -65,7 +64,6 @@ export function diffPoints({resource, setRangeFn, Converters}) {
             );
         break;
         case 'isosceles' :
-
             return (
                 setRangeFn(0, STEP_BASIS*300, TAU*2).map((deg)=>{
                     return {
@@ -74,12 +72,9 @@ export function diffPoints({resource, setRangeFn, Converters}) {
                     }
                 })
             );
-
         break;
-        case 'smooth_wave':
-                        
+        case 'smooth_wave':                    
             if (resource.waveConfig){
-                
                 return (
                     setRangeFn(0, STEP_BASIS*1, TAU * resource.waveConfig.periods).map((deg)=>{
                         return {
@@ -88,15 +83,11 @@ export function diffPoints({resource, setRangeFn, Converters}) {
                         }
                     })
                 );
-                
-
             }
         break;
-
         case 'triangle_wave':
             // DEV_NOTE # due to way this wrapper is built, to avoid graphical artifacts, please phase horizontally|vertically via `transformSVG` (see `../index.js`)
             if ( resource.waveConfig ){
-
                 return (
                     setRangeFn(0, STEP_BASIS*90, TAU * resource.waveConfig.periods).map((deg)=>{
                         return {

@@ -1,10 +1,10 @@
-import { userConfigs, initSVG, transformSVG, diffPoints, CASE, COLORS, SHAPE_TYPE, UI_EVENTS } from './implementation/index.js';
 import { HTMLCanvas, XMLSVG } from './src/views/index.js';
+import { ENUMS, userConfigs, initSVG, transformSVG, diffPoints } from './implementation/index.js';
+import { initGUIRange, waveConfig } from './implementation/GUI/index.js';
+
 import package_json from './package.json' with { type: 'json' };
 
-import { initGUIRange } from './implementation/GUI/index.js';
-import { waveConfig } from './implementation/GUI/index.js';
-
+const { CASE, COLORS, SHAPE, UI_EVENTS } = ENUMS;
 document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
 
     document.title = package_json.name;
@@ -73,12 +73,15 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
                     
                     });
 
-                    Array.of(gui.wave.frequency.element, gui.wave.amplitude.element)
-                        .forEach((wave)=>{
+                    Array.of(...[
+                        gui.wave.frequency, 
+                        gui.wave.amplitude, 
+                        gui.wave.periods
+                    ]).forEach(({ element })=>{
 
-                            switch (wave.name) {
+                            switch (element.name) {
                                 case CASE.frequency :
-                                    wave.on(UI_EVENTS.input, function(){
+                                    element.on(UI_EVENTS.input, function(){
 
                                         waveConfig[CASE.frequency] = Number( this.value )
 
@@ -87,7 +90,7 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
                                                 Converters, 
                                                 setRangeFn: setRange,
                                                 resource: { 
-                                                    name: SHAPE_TYPE.smooth_wave, 
+                                                    name: SHAPE.smooth_wave, 
                                                     waveConfig: {
                                                         ...waveConfig
                                                         ,
@@ -102,16 +105,16 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
                                     });
                                 break;
                                 case CASE.amplitude :
-                                    wave.on(UI_EVENTS.input, function(){
+                                    element.on(UI_EVENTS.input, function(){
 
                                         waveConfig[CASE.amplitude] = Number( this.value )
 
-                                        document.querySelector(SHAPE_TYPE.path).setPoints([
+                                        document.querySelector(SHAPE.path).setPoints([
                                             ...diffPoints({
                                                 Converters, 
                                                 setRangeFn: setRange,
                                                 resource: { 
-                                                    name: SHAPE_TYPE.smooth_wave, 
+                                                    name: SHAPE.smooth_wave, 
                                                     waveConfig: {
                                                         ...waveConfig
                                                         ,
@@ -119,6 +122,33 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
                                                          * @override
                                                          */
                                                         amplitude: waveConfig[CASE.amplitude]
+                                                    } 
+                                                }
+                                            })
+                                        ]);
+                                    });
+                                break;
+                                case CASE.periods :
+                                    element.on(UI_EVENTS.input, function(){
+
+                                        console.log(Number( this.value ));
+                                        
+
+                                        waveConfig[CASE.periods] = Number( this.value )
+
+                                        document.querySelector(SHAPE.path).setPoints([
+                                            ...diffPoints({
+                                                Converters, 
+                                                setRangeFn: setRange,
+                                                resource: { 
+                                                    name: SHAPE.smooth_wave, 
+                                                    waveConfig: {
+                                                        ...waveConfig
+                                                        ,
+                                                        /**
+                                                         * @override
+                                                         */
+                                                        periods: waveConfig[CASE.periods]
                                                     } 
                                                 }
                                             })
