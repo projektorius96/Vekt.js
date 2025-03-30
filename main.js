@@ -81,7 +81,11 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
                                     resource: { 
                                         name: SHAPE_TYPE.smooth_wave, 
                                         waveConfig: {
-                                            ...waveConfig,
+                                            ...waveConfig
+                                            ,
+                                            /**
+                                             * @override
+                                             */
                                             frequency: Number( this.value ) || waveConfig.frequency
                                         } 
                                     }
@@ -91,6 +95,7 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
                     });
 
                     gui.wave.amplitude.element.on(UI_EVENTS.input, function(){
+                        
                         document.querySelector('path').setPoints([
                             ...diffPoints({
                                 Converters, 
@@ -98,12 +103,17 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
                                 resource: { 
                                     name: SHAPE_TYPE.smooth_wave, 
                                     waveConfig: {
-                                        ...waveConfig,
+                                        ...waveConfig
+                                        ,
+                                        /**
+                                         * @override
+                                         */
                                         amplitude: Number( this.value ) || waveConfig.amplitude
                                     } 
                                 }
                             })
                         ]);
+
                     })
             
         })

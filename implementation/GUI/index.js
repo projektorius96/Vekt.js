@@ -5,7 +5,7 @@ export const waveConfig = {
     ,
     frequency: 3
     ,
-    amplitude : 4
+    amplitude : 0.1
 }
 
 export 
@@ -51,10 +51,15 @@ export
                         new Input({
                             name: amplitudeLabel.textContent, 
                             attrs: {
-                                min: -10,
-                                max: 10,
-                                step: 1,
-                                value: 5
+                                /* DEV_NOTE # to avoid reaching zero, instead of hitting between [1..3], where 2 as 0  */
+                                /* min: 1,
+                                max: 3,
+                                step: 0.1,
+                                value: 2 */
+                                min: -1,
+                                max: 1,
+                                step: 0.1,
+                                value: 0.1
                             }
                         })
                     )
