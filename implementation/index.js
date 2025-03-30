@@ -19,6 +19,8 @@ export const
     SHAPE_TYPE = ENUM
     ,
     UI_EVENTS = ENUM
+    ,
+    CASE = ENUM
     ;
 
 export 
@@ -27,7 +29,7 @@ export
             stage : {
                 /* id: 'stage',  */// (default)
                 container: document.body,
-                scale: 30,
+                scale: 20,
             }
             ,
             grid : {

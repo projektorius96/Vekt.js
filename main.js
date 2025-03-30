@@ -1,4 +1,4 @@
-import { userConfigs, initSVG, transformSVG, diffPoints, COLORS, SHAPE_TYPE, UI_EVENTS } from './implementation/index.js';
+import { userConfigs, initSVG, transformSVG, diffPoints, CASE, COLORS, SHAPE_TYPE, UI_EVENTS } from './implementation/index.js';
 import { HTMLCanvas, XMLSVG } from './src/views/index.js';
 import package_json from './package.json' with { type: 'json' };
 
@@ -51,7 +51,7 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
                                                                 
                                 switch (context.canvas.id) {
                 
-                                    case SHAPE_TYPE.grid :
+                                    case CASE.grid :
 
                                         if (
                                             HTMLCanvas.Views.Grid.draw({
@@ -72,49 +72,62 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
                         }
                     
                     });
-                    
-                    gui.wave.frequency.element.on(UI_EVENTS.input, function(){
-                            document.querySelector('path').setPoints([
-                                ...diffPoints({
-                                    Converters, 
-                                    setRangeFn: setRange,
-                                    resource: { 
-                                        name: SHAPE_TYPE.smooth_wave, 
-                                        waveConfig: {
-                                            ...waveConfig
-                                            ,
-                                            /**
-                                             * @override
-                                             */
-                                            frequency: Number( this.value ) || waveConfig.frequency
-                                        } 
-                                    }
-                                })
-                            ]);
-                        ;
-                    });
 
-                    gui.wave.amplitude.element.on(UI_EVENTS.input, function(){
+                    Array.of(gui.wave.frequency.element, gui.wave.amplitude.element)
+                        .forEach((wave)=>{
 
-                        document.querySelector('path').setPoints([
-                            ...diffPoints({
-                                Converters, 
-                                setRangeFn: setRange,
-                                resource: { 
-                                    name: SHAPE_TYPE.smooth_wave, 
-                                    waveConfig: {
-                                        ...waveConfig
-                                        ,
-                                        /**
-                                         * @override
-                                         */
-                                        amplitude: Number( this.value )
-                                    } 
-                                }
-                            })
-                        ]);
+                            switch (wave.name) {
+                                case CASE.frequency :
+                                    wave.on(UI_EVENTS.input, function(){
 
-                    })
+                                        waveConfig[CASE.frequency] = Number( this.value )
+
+                                        document.querySelector('path').setPoints([
+                                            ...diffPoints({
+                                                Converters, 
+                                                setRangeFn: setRange,
+                                                resource: { 
+                                                    name: SHAPE_TYPE.smooth_wave, 
+                                                    waveConfig: {
+                                                        ...waveConfig
+                                                        ,
+                                                        /**
+                                                         * @override
+                                                         */
+                                                        frequency: waveConfig[CASE.frequency]
+                                                    } 
+                                                }
+                                            })
+                                        ]);
+                                    });
+                                break;
+                                case CASE.amplitude :
+                                    wave.on(UI_EVENTS.input, function(){
+
+                                        waveConfig[CASE.amplitude] = Number( this.value )
+
+                                        document.querySelector(SHAPE_TYPE.path).setPoints([
+                                            ...diffPoints({
+                                                Converters, 
+                                                setRangeFn: setRange,
+                                                resource: { 
+                                                    name: SHAPE_TYPE.smooth_wave, 
+                                                    waveConfig: {
+                                                        ...waveConfig
+                                                        ,
+                                                        /**
+                                                         * @override
+                                                         */
+                                                        amplitude: waveConfig[CASE.amplitude]
+                                                    } 
+                                                }
+                                            })
+                                        ]);
+                                    });
+                                break;
+                            }
+
+                        })
             
         })
 

@@ -17,9 +17,13 @@ export
         ;
 
         const [
-                freqLabel, amplitudeLabel
+                freqLabel
+                , 
+                amplitudeLabel
             ] = [
-                new Label('frequency'), new Label('amplitude')
+                new Label('frequency')
+                , 
+                new Label('amplitude')
             ];
 
 
