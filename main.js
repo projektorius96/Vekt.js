@@ -91,7 +91,19 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
                     });
 
                     gui.wave.amplitude.element.on(UI_EVENTS.input, function(){
-                        console.log( Number( this.value ) )
+                        document.querySelector('path').setPoints([
+                            ...diffPoints({
+                                Converters, 
+                                setRangeFn: setRange,
+                                resource: { 
+                                    name: SHAPE_TYPE.smooth_wave, 
+                                    waveConfig: {
+                                        ...waveConfig,
+                                        amplitude: Number( this.value ) || waveConfig.amplitude
+                                    } 
+                                }
+                            })
+                        ]);
                     })
             
         })
