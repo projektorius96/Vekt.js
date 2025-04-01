@@ -4,41 +4,30 @@ import { initGUIRange, waveConfig } from './implementation/GUI/index.js';
 
 import package_json from './package.json' with { type: 'json' };
 
-const { CASE, COLORS, SHAPE, UI_EVENTS } = ENUMS;
-document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
+document.addEventListener(ENUMS.UI_EVENTS.DOMContentLoaded, ()=>{
 
     document.title = package_json.name;
 
-    const 
-        { Converters } = HTMLCanvas.Helpers.Trigonometry
-        ,
-        { setRange } = HTMLCanvas.Helpers.Trigonometry
-        ;
-
-    document.body.appendChild(
-        new HTMLCanvas.ViewGroup.Stage({
-            ...userConfigs.stage
-        })
-    );
-
     const
-        svgContainer = initSVG({XMLSVG, HTMLCanvas})
+        { CASE, COLORS, SHAPE, UI_EVENTS } = ENUMS
+        ,
+        { Stage, Layer } = HTMLCanvas.ViewGroup
+        ,
+        { setRange, Converters } = HTMLCanvas.Helpers.Trigonometry
         ;
-        document.body.children.stage?.add([
-            new HTMLCanvas.ViewGroup.Layer({
-                ...userConfigs.grid
-            })
-            ,
-            svgContainer
-        ])
-        
-    if ( HTMLCanvas.init({stage}) ) {
 
-        /* === GUI === */
+        document.body.append(...[
+            ( new Stage({...userConfigs.stage}) )
+                .append(...[
+                    new Layer({...userConfigs.grid})
+                    ,
+                    initSVG({XMLSVG, HTMLCanvas})
+                ])
+        ]);
 
-                const gui = initGUIRange({id: 'wave', container: stage.parentElement, position: 'right', draggable: true});
-    
-        /* === GUI === */
+        const
+            GUIRange 
+                = initGUIRange({id: 'wave', container: stage.parentElement, position: 'right', draggable: true});
 
         window.on(UI_EVENTS.resize, ()=>{
 
@@ -64,7 +53,7 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
                                                     strokeStyle: COLORS.blue
                                                 }}
                                             )
-                                        ) transformSVG({HTMLCanvas, XMLSVG, parent: svgContainer}) ;
+                                        ) transformSVG({HTMLCanvas, XMLSVG, parent: document.querySelector('svg-container')}) ;
 
                                     break;
 
@@ -74,9 +63,9 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
                     });
                     
                     Array.of(...[
-                        gui.wave.frequency, 
-                        gui.wave.amplitude, 
-                        gui.wave.periods
+                        GUIRange.wave.frequency, 
+                        GUIRange.wave.amplitude, 
+                        GUIRange.wave.periods
                     ]).forEach(({ element })=>{
 
                             switch (element.name) {
@@ -161,6 +150,6 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
         // # This allows to initiate `<canvas>` hosted "bitmap" with internal context without waiting `window.onresize` to be triggered by end-user
         window.dispatchEvent(new Event(UI_EVENTS.resize));
 
-    }
+    /* } */
 
 });

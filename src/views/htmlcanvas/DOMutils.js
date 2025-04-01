@@ -7,13 +7,6 @@ Object.defineProperties(HTMLDivElement.prototype, {
             return this.children
         }
     }
-    ,
-    add: {
-        value: function(children) {
-            this.append(...children)
-        }
-    }
-    ,
 });
 
 Object.defineProperties(Array.prototype, {

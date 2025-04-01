@@ -30,7 +30,6 @@ export
                 new Label('amplitude')
             ];
 
-
             const wave = gui.addGroup({
                 name: 'wave-bindings', 
                 open: true, 
@@ -70,6 +69,7 @@ export
                     )
                 ]);
 
+                // DEV_NOTE # we must init above as the below depends on above, thus a separate `append` call
                 gui.find(wave).children.slot1.append(...[
                     ...Array(
                         periods,
@@ -79,7 +79,7 @@ export
                                 min: 0,
                                 max: 1,
                                 /* DEV_NOTE # this configuration of ever-growing stroked wave view, is a true hidden gem !!!  */
-                                step: (1 / Number( gui.find({name: frequency.textContent}).max )),
+                                step: (1 / Number( gui.find({name: frequency.text}).max )),
                                 value: waveConfig.periods
                             }
                         })
@@ -87,6 +87,8 @@ export
                 ])
 
             return ({
+                find: gui.find
+                ,
                 wave: {
                     [frequency.text] : {
                         element: gui.find({name: frequency.text})
