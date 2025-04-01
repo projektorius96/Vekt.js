@@ -1,5 +1,5 @@
 import { diffPoints, ENUM } from "./primitives.js";
-import { waveConfig } from './GUI/index.js'
+import { waveConfig, gridConfig } from './GUI/index.js'
 
 export {
     diffPoints
@@ -31,7 +31,7 @@ export
             stage : {
                 /* id: 'stage',  */// (default)
                 container: document.body,
-                scale: 20,
+                scale: gridConfig.scale,
             }
             ,
             grid : {

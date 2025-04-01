@@ -1,12 +1,17 @@
 import { Pane, Input, Label } from "wc-pane";
 
-export const waveConfig = {
-    periods : 0.5
-    ,
-    frequency: 3
-    ,
-    amplitude : -1
-}
+export 
+    const waveConfig = {
+        periods : 0.5
+        ,
+        frequency: 3
+        ,
+        amplitude : -1
+    }
+export 
+    const gridConfig = {
+        scale: 30,
+    }
 
 export 
     const 
@@ -27,14 +32,21 @@ export
                 , 
                 new Label('frequency')
                 , 
-                new Label('amplitude')
+                new Label('amplitude'),
             ];
 
-            const wave = gui.addGroup({
-                name: 'wave-bindings', 
-                open: true, 
-                nodes: gui.addSection({accessor: 'slot', sectionCount: 1})
-            })
+            const 
+                wave = gui.addGroup({
+                    name: 'wave-bindings', 
+                    open: true, 
+                    nodes: gui.addSection({accessor: 'slot', sectionCount: 1})
+                })
+            const
+                grid = gui.addGroup({
+                    name: 'grid-bindings',
+                    open: false,
+                    nodes: gui.addSection({accessor: 'slot', sectionCount: 1}),
+                })
 
             /**
              * > EXAMPLE: Herein "`children.slot`N" where `N` is integer no less than 1, and whose greatest value is equal to `sectionCount`
@@ -85,9 +97,29 @@ export
                         })
                     )
                 ])
+                
+                const gridLabel = new Label('scale')
+                gui.find(grid).children.slot1.append(...[
+                    ...Array(
+                        gridLabel.text,
+                        new Input({
+                            name: gridLabel.text,
+                            attrs: {
+                                min: 1,
+                                max: gridConfig.scale * 2,
+                                step: 1,
+                                value: gridConfig.scale
+                            }
+                        })
+                    )
+                ])
 
             return ({
-                find: gui.find
+                grid : {
+                    [gridLabel.text] : {
+                        element: gui.find({name: gridLabel.text})
+                    }
+                }
                 ,
                 wave: {
                     [frequency.text] : {
