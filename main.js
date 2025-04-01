@@ -36,7 +36,7 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
 
         /* === GUI === */
 
-                const gui = initGUIRange({container: stage.parentElement, position: 'right'});
+                const gui = initGUIRange({container: stage.parentElement, position: 'right', draggable: true});
     
         /* === GUI === */
 
@@ -88,7 +88,7 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
                                         document.querySelector('path').setPoints([
                                             ...diffPoints({
                                                 Converters, 
-                                                setRangeFn: setRange,
+                                                setRange,
                                                 resource: { 
                                                     name: SHAPE.smooth_wave, 
                                                     waveConfig: {
@@ -112,7 +112,7 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
                                         document.querySelector(SHAPE.path).setPoints([
                                             ...diffPoints({
                                                 Converters, 
-                                                setRangeFn: setRange,
+                                                setRange,
                                                 resource: { 
                                                     name: SHAPE.smooth_wave, 
                                                     waveConfig: {
@@ -130,16 +130,13 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
                                 break;
                                 case CASE.periods :
                                     element.on(UI_EVENTS.input, function(){
-
-                                        console.log(Number( this.value ));
                                         
-
                                         waveConfig[CASE.periods] = Number( this.value )
 
                                         document.querySelector(SHAPE.path).setPoints([
                                             ...diffPoints({
                                                 Converters, 
-                                                setRangeFn: setRange,
+                                                setRange,
                                                 resource: { 
                                                     name: SHAPE.smooth_wave, 
                                                     waveConfig: {

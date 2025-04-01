@@ -19,10 +19,10 @@ let HOVER_ME_0;
  * @param  {String}   `options.resource`          - `resource` is symbolic name this function differentiates against (**see `switch` statement `case`s** for current available list of `resource`s) | Default: 'smooth_wave'
  * > **NOTE**: when it comes about `_wave` view to, avoid its graphical artifacts, please phase it horizontally or vertically via `transformSVG` (see `../index.js`)
 
- * @param  {Function} `options.setRangeFn`        - function body passed
+ * @param  {Function} `options.setRange`        - function body passed
  * @return {Object}   `options.Converters`        - forwared `options.Converters` object, originally defined within "`HTMLCanvas`" named module export
  */
-export function diffPoints({resource, setRangeFn, Converters}) {
+export function diffPoints({resource, setRange, Converters}) {
 
     const 
         TAU = 360
@@ -35,7 +35,7 @@ export function diffPoints({resource, setRangeFn, Converters}) {
     switch (resource.name) {
         case 'circle' :
             return (
-                setRangeFn(0, STEP_BASIS, TAU*2).map((deg)=>{
+                setRange(0, STEP_BASIS, TAU*2).map((deg)=>{
                     return {
                         x: 1 * Math.cos( Converters.degToRad( deg ) ),
                         y: 1 * Math.sin( Converters.degToRad( deg ) ),
@@ -45,7 +45,7 @@ export function diffPoints({resource, setRangeFn, Converters}) {
         break;
         case 'square' :
             return (
-                setRangeFn(0, STEP_BASIS*90, TAU*2).map((deg)=>{
+                setRange(0, STEP_BASIS*90, TAU*2).map((deg)=>{
                     return {
                         x: 1 * Math.cos( Converters.degToRad( deg ) ),
                         y: 1 * Math.sin( Converters.degToRad( deg ) ),
@@ -55,7 +55,7 @@ export function diffPoints({resource, setRangeFn, Converters}) {
         break;
         case 'right_triangle' :
             return (
-                setRangeFn(0, STEP_BASIS*270, TAU*2).map((deg)=>{
+                setRange(0, STEP_BASIS*270, TAU*2).map((deg)=>{
                     return {
                         x: 1 * Math.cos( Converters.degToRad( deg ) ),
                         y: 1 * Math.sin( Converters.degToRad( deg ) ),
@@ -65,7 +65,7 @@ export function diffPoints({resource, setRangeFn, Converters}) {
         break;
         case 'isosceles' :
             return (
-                setRangeFn(0, STEP_BASIS*300, TAU*2).map((deg)=>{
+                setRange(0, STEP_BASIS*300, TAU*2).map((deg)=>{
                     return {
                         x: 1 * Math.cos( Converters.degToRad( deg ) ),
                         y: 1 * Math.sin( Converters.degToRad( deg ) ),
@@ -76,7 +76,7 @@ export function diffPoints({resource, setRangeFn, Converters}) {
         case 'smooth_wave':                    
             if (resource.waveConfig){
                 return (
-                    setRangeFn(0, STEP_BASIS*1, TAU * resource.waveConfig.periods).map((deg)=>{
+                    setRange(0, STEP_BASIS*1, TAU * resource.waveConfig.periods).map((deg)=>{
                         return {
                             x: 1 * /* Math.cos( */ Converters.degToRad( deg ) /* ) */,
                             y: (resource.waveConfig.amplitude * SNAP_TO_GRID) * Math.sin( Converters.degToRad( deg )*resource.waveConfig.frequency ),
@@ -89,7 +89,7 @@ export function diffPoints({resource, setRangeFn, Converters}) {
             // DEV_NOTE # due to way this wrapper is built, to avoid graphical artifacts, please phase horizontally|vertically via `transformSVG` (see `../index.js`)
             if ( resource.waveConfig ){
                 return (
-                    setRangeFn(0, STEP_BASIS*90, TAU * resource.waveConfig.periods).map((deg)=>{
+                    setRange(0, STEP_BASIS*90, TAU * resource.waveConfig.periods).map((deg)=>{
                         return {
                             x: 1 * /* Math.cos( */ Converters.degToRad( deg ) /* ) */,
                             y: (resource.waveConfig.amplitude * SNAP_TO_GRID) * Math.sin( Converters.degToRad( deg )*resource.waveConfig.frequency ),

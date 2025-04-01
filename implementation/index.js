@@ -76,7 +76,7 @@ export const initSVG = ({XMLSVG, HTMLCanvas}) => {
                         points: [
                             ...diffPoints({
                                 Converters, 
-                                setRangeFn: setRange,
+                                setRange,
                                 resource: { 
                                     name: ENUMS.SHAPE.smooth_wave, 
                                     waveConfig 
