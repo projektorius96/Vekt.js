@@ -36,7 +36,7 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
 
         /* === GUI === */
 
-                const gui = initGUIRange({container: stage.parentElement, position: 'right', draggable: true});
+                const gui = initGUIRange({id: 'wave', container: stage.parentElement, position: 'right', draggable: true});
     
         /* === GUI === */
 
@@ -72,7 +72,7 @@ document.addEventListener(UI_EVENTS.DOMContentLoaded, ()=>{
                         }
                     
                     });
-
+                    
                     Array.of(...[
                         gui.wave.frequency, 
                         gui.wave.amplitude, 

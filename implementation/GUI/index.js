@@ -1,5 +1,4 @@
 import { Pane, Input, Label } from "wc-pane";
-import { ENUM } from "../primitives.js";
 
 export const waveConfig = {
     periods : 0.5
@@ -13,39 +12,41 @@ export
     const 
         initGUIRange = function(){
 
-        const 
+        const
             gui = new Pane(...arguments)
         ;
 
         const [
-                periodsLabel
+                periods
                 , 
-                freqLabel
+                frequency
                 , 
-                amplitudeLabel
+                amplitude
             ] = [
-                new Label(ENUM.periods)
+                new Label('periods')
                 , 
-                new Label(ENUM.frequency)
+                new Label('frequency')
                 , 
-                new Label(ENUM.amplitude)
+                new Label('amplitude')
             ];
 
 
-            let wave_bindings = gui.addGroup({
+            const wave = gui.addGroup({
                 name: 'wave-bindings', 
                 open: true, 
-                nodes: gui.addSection({accessor: ENUM.slot, sectionCount: 1})
+                nodes: gui.addSection({accessor: 'slot', sectionCount: 1})
             })
-        
 
-            // DEV_NOTE # children.slotN where N is integer no less than 1, and whose greatest value is equal to `sectionCount`
-            gui.find(wave_bindings).children.slot1
+            /**
+             * > EXAMPLE: Herein "`children.slot`N" where `N` is integer no less than 1, and whose greatest value is equal to `sectionCount`
+             */
+            let EXAMPLE_1;
+            gui.find(wave).children.slot1
                 .append(...[
                     ...Array(
-                        freqLabel,
+                        frequency,
                         new Input({
-                            name: freqLabel.textContent, 
+                            name: frequency.text,
                             attrs: {
                                 min: 1,
                                 max: 60,
@@ -56,9 +57,9 @@ export
                     )
                     ,
                     ...Array(
-                        amplitudeLabel,
+                        amplitude,
                         new Input({
-                            name: amplitudeLabel.textContent,
+                            name: amplitude.text,
                             attrs: {
                                 min: -1,
                                 max: 1,
@@ -69,16 +70,16 @@ export
                     )
                 ]);
 
-                gui.find(wave_bindings).children.slot1.append(...[
+                gui.find(wave).children.slot1.append(...[
                     ...Array(
-                        periodsLabel,
+                        periods,
                         new Input({
-                            name: periodsLabel.textContent,
+                            name: periods.text,
                             attrs: {
                                 min: 0,
                                 max: 1,
                                 /* DEV_NOTE # this configuration of ever-growing stroked wave view, is a true hidden gem !!!  */
-                                step: (1 / Number( gui.find({name: freqLabel.textContent}).max )),
+                                step: (1 / Number( gui.find({name: frequency.textContent}).max )),
                                 value: waveConfig.periods
                             }
                         })
@@ -87,16 +88,16 @@ export
 
             return ({
                 wave: {
-                    [freqLabel.textContent] : {
-                        element: gui.find({name: freqLabel.textContent})
+                    [frequency.text] : {
+                        element: gui.find({name: frequency.text})
                     }
                     ,
-                    [amplitudeLabel.textContent] : {
-                        element: gui.find({name: amplitudeLabel.textContent})
+                    [amplitude.text] : {
+                        element: gui.find({name: amplitude.text})
                     }
                     ,
-                    [periodsLabel.textContent] : {
-                        element: gui.find({name: periodsLabel.textContent})
+                    [periods.text] : {
+                        element: gui.find({name: periods.text})
                     }
                     ,
                 }
