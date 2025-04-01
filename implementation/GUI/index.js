@@ -101,7 +101,7 @@ export
                 const gridLabel = new Label('scale')
                 gui.find(grid).children.slot1.append(...[
                     ...Array(
-                        gridLabel.text,
+                        gridLabel,
                         new Input({
                             name: gridLabel.text,
                             attrs: {
