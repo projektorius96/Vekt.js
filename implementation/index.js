@@ -30,7 +30,7 @@ export
         userConfigs = {
             stage : {
                 /* id: 'stage',  */// (default)
-                container: document.body,
+                /* container: document.body, */// (default)
                 scale: gridConfig.scale,
             }
             ,
