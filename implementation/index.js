@@ -105,23 +105,6 @@ export const transformSVG = ({HTMLCanvas, XMLSVG, parent}) =>{
             Array.from(svgElement.children).on((shape) => {
 
                 switch (shape.tagName) {
-                    case ENUMS.SHAPE.rect:
-                        void function(){
-                                
-                                shape.setTranslate({x: Number(stage.grid.SVG.X_IN_MIDDLE), y: Number(stage.grid.SVG.Y_IN_MIDDLE)});
-                                shape.setArea({width: stage.grid.GRIDCELL_DIM * scalingFactor, height: stage.grid.GRIDCELL_DIM * scalingFactor});
-    
-                                if ( shape.id === `rect-2` ) {
-                                        
-                                    shape.setTranslate({
-                                        x: Number( XMLSVG.Helpers.findBy(`${shape.tagName}-1`).getTranslate().x ) + Number( XMLSVG.Helpers.findBy(`${shape.tagName}-1`).getArea().width ), 
-                                        y: Number( XMLSVG.Helpers.findBy(`${shape.tagName}-1`).getTranslate().y ) + Number( XMLSVG.Helpers.findBy(`${shape.tagName}-1`).getArea().height )
-                                    })
-    
-                                }
-    
-                        }();
-                    break;
                     case ENUMS.SHAPE.circle:
                         void function(){
     
