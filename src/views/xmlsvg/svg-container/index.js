@@ -1,5 +1,5 @@
 import setStyling from './index.css.js'
-import { setCoords, getNamespace } from "../modules/index.js";
+import { setCoords, setPoints, getNamespace } from "../modules/index.js";
 
 export const svg_container = getNamespace(import.meta.url);
 customElements.define(svg_container, class extends HTMLElement {
@@ -89,6 +89,17 @@ function setMixin({ref}){
                     setArea({width=1, height=1}){
                         view.attributes.width.value = width;
                         view.attributes.height.value = height;
+                    }
+                })
+            break;
+            case 'path' :
+                Object.assign(view, {
+                    getPoints(){
+                        return(this.attributes.d.value);
+                    }
+                    ,
+                    'setPoints' : function(points){                        
+                        this.attributes.d.value = setPoints.call(view, points)
                     }
                 })
             break;

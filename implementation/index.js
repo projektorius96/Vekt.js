@@ -1,19 +1,28 @@
-import { diffShape, ENUM } from "./primitives.js";
+import { diffPoints, ENUM } from "./primitives.js";
+import { waveConfig, gridConfig } from './GUI/index.js'
+
+export {
+    diffPoints
+}
 
 /**
  * @alias
  * 
  * @example
- * COLORS.red // 'red'
- * COLORS.green // 'green'
- * COLORS.blue // 'blue'
+ * ENUMS.COLORS.red // 'red'
+ * ENUMS.COLORS.green // 'green'
+ * ENUMS.COLORS.blue // 'blue'
  */
 export const
-    COLORS = ENUM
-    ,
-    SHAPE_TYPE = ENUM
-    ,
-    UI_EVENTS = ENUM
+    ENUMS = {
+        COLORS : ENUM
+        ,
+        SHAPE : ENUM
+        ,
+        UI_EVENTS : ENUM
+        ,
+        CASE : ENUM
+    }
     ;
 
 export 
@@ -22,27 +31,21 @@ export
             stage : {
                 /* id: 'stage',  */// (default)
                 container: document.body,
-                scale: 20,
+                scale: gridConfig.scale,
             }
             ,
             grid : {
-                id: ENUM.grid,
+                id: ENUMS.SHAPE.grid,
                 hidden: !true,
                 dotted: !true,
                 lineWidth: 0.1, /* <=: for colours like 'magenta', use partial value to allow reader's eye to be easier to adapt... */
-                strokeStyle: COLORS.magenta,
+                strokeStyle: ENUMS.COLORS.magenta,
                 opacity: 1 /* values := [0..1] */
             }
         }
         ;
 
 export const initSVG = ({XMLSVG, HTMLCanvas}) => {
-
-    let 
-        COLORS = ENUM
-        ,
-        SHAPES = ENUM
-        ;
 
     const
         { Converters, setRange } = HTMLCanvas.Helpers.Trigonometry;
@@ -60,7 +63,7 @@ export const initSVG = ({XMLSVG, HTMLCanvas}) => {
                     options: {
                         id: ENUM.svg_circle.replace("_", "-"),
                         hidden: !true,
-                        fill: COLORS.black,
+                        fill: ENUMS.COLORS.black,
                         radius: 150,
                         translateX: window.innerWidth / 2,
                         translateY: window.innerHeight / 2,
@@ -71,11 +74,18 @@ export const initSVG = ({XMLSVG, HTMLCanvas}) => {
                         id: ENUM.svg_path.replace("_", "-"),
                         hidden: !true,
                         points: [
-                            ...diffShape({resource: SHAPES.smooth_wave, Converters, setRangeFn: setRange})
+                            ...diffPoints({
+                                Converters, 
+                                setRange,
+                                resource: { 
+                                    name: ENUMS.SHAPE.smooth_wave, 
+                                    waveConfig 
+                                }
+                            })
                         ],
                         strokeWidth: 3,
-                        fill: COLORS.green,
-                        stroke: 'none',
+                        fill: ENUMS.COLORS.none,
+                        stroke: ENUMS.COLORS.green,
                     }
                 })
             ]
@@ -95,7 +105,7 @@ export const transformSVG = ({HTMLCanvas, XMLSVG, parent}) =>{
             Array.from(svgElement.children).on((shape) => {
 
                 switch (shape.tagName) {
-                    case SHAPE_TYPE.rect:
+                    case ENUMS.SHAPE.rect:
                         void function(){
                                 
                                 shape.setTranslate({x: Number(stage.grid.SVG.X_IN_MIDDLE), y: Number(stage.grid.SVG.Y_IN_MIDDLE)});
@@ -112,7 +122,7 @@ export const transformSVG = ({HTMLCanvas, XMLSVG, parent}) =>{
     
                         }();
                     break;
-                    case SHAPE_TYPE.circle:
+                    case ENUMS.SHAPE.circle:
                         void function(){
     
                             shape.setCircle({
@@ -123,7 +133,7 @@ export const transformSVG = ({HTMLCanvas, XMLSVG, parent}) =>{
     
                         }();
                     break;
-                    case SHAPE_TYPE.path:
+                    case ENUMS.SHAPE.path:
                         void function () {
     
                             shape.style.strokeWidth = 
@@ -147,7 +157,7 @@ export const transformSVG = ({HTMLCanvas, XMLSVG, parent}) =>{
     
                             shape.setAttribute("transform", currentMatrix().toString());
     
-                            shape.addEventListener(UI_EVENTS.click, (e) => {
+                            shape.addEventListener(ENUMS.UI_EVENTS.click, (e) => {
                                 XMLSVG.enableDraggingFor(e.currentTarget, currentMatrix.bind(null))
                             });
                             
@@ -155,8 +165,8 @@ export const transformSVG = ({HTMLCanvas, XMLSVG, parent}) =>{
                     break;
                 }
 
-                shape.addEventListener(UI_EVENTS.click, (e)=>{
-                    if ( shape.tagName !== SHAPE_TYPE.path ) XMLSVG.enableDraggingFor(e.currentTarget) ;
+                shape.addEventListener(ENUMS.UI_EVENTS.click, (e)=>{
+                    if ( shape.tagName !== ENUMS.SHAPE.path ) XMLSVG.enableDraggingFor(e.currentTarget) ;
                 });
 
             });

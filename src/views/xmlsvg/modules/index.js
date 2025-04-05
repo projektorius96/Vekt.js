@@ -69,3 +69,17 @@ export function enableDraggingFor(currentTarget, currentMatrixFn){
     document.on('mouseup', mouseup);
 
 }
+
+export function setPoints(points = []) {
+    
+    if (points.length === 0) return "";
+        let path = `M 0 0`;
+            points.forEach((point, i) => {
+                if (i > 0){
+                    path += ` L ${point.x} ${point.y}`;
+                }
+            });
+    
+    return path;
+
+}

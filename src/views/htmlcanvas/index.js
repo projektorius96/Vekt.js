@@ -36,9 +36,9 @@ export class HTMLCanvas {
          * @returns {Number} makes sure the modified `stage.grid.GRIDCELL_DIM` is always even, this prevents sub-pixel rendering in grid-first coordinate system {@link https://developer.mozilla.org/en-US/docs/Web/API/Canvas_API/Tutorial/Optimizing_canvas#avoid_floating-point_coordinates_and_use_integers_instead}
         */
         static #evenNumber = (num = 0) => {
-            const rounded = Math.ceil(num);
+            const ceiledNumber = Math.ceil(num);
             return (
-                ( (rounded % 2) === 1 ) ? (rounded + 1) : (rounded)
+                ( (ceiledNumber % 2) === 1 ) ? (ceiledNumber + 1) : (ceiledNumber)
             );
         }
 
