@@ -5,7 +5,7 @@ import { initGUIRange, waveConfig , gridConfig } from './implementation/GUI/inde
 import package_json from './package.json' with { type: 'json' };
 
 const
-    { CASE, COLORS, SHAPE, UI_EVENTS } = ENUMS
+    { CASE, COLOR, SHAPE, UI_EVENTS } = ENUMS
     ,
     { setRange, Converters } = HTMLCanvas.Helpers.Trigonometry
     ;
@@ -56,7 +56,7 @@ document.on(UI_EVENTS.DOMContentLoaded, ()=>{
                                                 /**
                                                  * @override
                                                  */
-                                                strokeStyle: COLORS.blue
+                                                strokeStyle: COLOR.blue
                                             }}
                                         )
                                     ) {

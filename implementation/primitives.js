@@ -1,8 +1,8 @@
 /**
  * @example
- * ENUMS.give; // 'give'
- * ENUMS.me; // 'me'
- * ENUMS.value; // 'value'
+ * ENUM.give; // 'give'
+ * ENUM.me; // 'me'
+ * ENUM.value; // 'value'
 */
 let HOVER_ME_0;
     export const
