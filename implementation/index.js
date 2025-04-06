@@ -9,13 +9,13 @@ export {
  * @alias
  * 
  * @example
- * ENUMS.COLORS.red // 'red'
- * ENUMS.COLORS.green // 'green'
- * ENUMS.COLORS.blue // 'blue'
+ * ENUMS.COLOR.red // 'red'
+ * ENUMS.COLOR.green // 'green'
+ * ENUMS.COLOR.blue // 'blue'
  */
 export const
     ENUMS = {
-        COLORS : ENUM
+        COLOR : ENUM
         ,
         SHAPE : ENUM
         ,
@@ -39,7 +39,7 @@ export
                 hidden: !true,
                 dotted: !true,
                 lineWidth: 0.1, /* <=: for colours like 'magenta', use partial value to allow reader's eye to be easier to adapt... */
-                strokeStyle: ENUMS.COLORS.magenta,
+                strokeStyle: ENUMS.COLOR.magenta,
                 opacity: 1 /* values := [0..1] */
             }
         }
@@ -63,7 +63,7 @@ export const initSVG = ({XMLSVG, HTMLCanvas}) => {
                     options: {
                         id: ENUM.svg_circle.replace("_", "-"),
                         hidden: !true,
-                        fill: ENUMS.COLORS.black,
+                        fill: ENUMS.COLOR.black,
                         radius: 150,
                         translateX: window.innerWidth / 2,
                         translateY: window.innerHeight / 2,
@@ -84,8 +84,8 @@ export const initSVG = ({XMLSVG, HTMLCanvas}) => {
                             })
                         ],
                         strokeWidth: 3,
-                        fill: ENUMS.COLORS.none,
-                        stroke: ENUMS.COLORS.green,
+                        fill: ENUMS.COLOR.none,
+                        stroke: ENUMS.COLOR.green,
                     }
                 })
             ]

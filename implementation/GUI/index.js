@@ -1,17 +1,11 @@
+import gridConfig from './configs/grid.json' with { type: 'json' };
+import waveConfig from './configs/wave.json' with { type: 'json' };
 import { Pane, Input, Label } from "wc-pane";
 
-export 
-    const waveConfig = {
-        periods : 0.5
-        ,
-        frequency: 3
-        ,
-        amplitude : -1
-    }
-export 
-    const gridConfig = {
-        scale: 30,
-    }
+export {
+    gridConfig,
+    waveConfig
+}
 
 export 
     const 
