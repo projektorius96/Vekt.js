@@ -1,5 +1,5 @@
 import { HTMLCanvas, XMLSVG } from './src/views/index.js';
-import { ENUMS, userConfigs, initSVG, transformSVG, diffPoints } from './implementation/index.js';
+import diffContext, { ENUMS, userConfigs, initSVG, transformSVG, diffPoints } from './implementation/index.js';
 import { initGUIRange, waveConfig , gridConfig } from './implementation/GUI/index.js';
 
 import package_json from './package.json' with { type: 'json' };
@@ -38,37 +38,8 @@ document.on(UI_EVENTS.DOMContentLoaded, ()=>{
             Object.assign( stage , { scale: gridConfig.scale } )
 
             HTMLCanvas
-            .init({stage})
-                .on((context)=>{
-
-                    // DEV_NOTE # because we mix HTML Canvas (CanvasRenderingContext2D) together with XML SVG, we must do the following check:..
-                    if ( context instanceof CanvasRenderingContext2D ) {
-                                                            
-                            switch (context.canvas.id) {
-            
-                                case CASE.grid :
-
-                                    if (
-                                        HTMLCanvas.Views.Grid.draw({
-                                            context, 
-                                            options: {
-                                                ...userConfigs.grid,
-                                                /**
-                                                 * @override
-                                                 */
-                                                strokeStyle: COLOR.blue
-                                            }}
-                                        )
-                                    ) {
-                                        transformSVG({HTMLCanvas, XMLSVG, parent: document.querySelector('svg-container')});
-                                    }
-
-                                break;
-
-                            }
-                    }
-                
-                });
+                .init({stage})
+                    .on(diffContext.bind(null, {HTMLCanvas, XMLSVG, transformSVG, userConfigs}));
 
 
         }); GUIRange.grid.scale.element.dispatch( new Event(UI_EVENTS.input) );        
