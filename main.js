@@ -1,16 +1,22 @@
 import { HTMLCanvas, XMLSVG } from './src/views/index.js';
-import { ENUMS, userConfigs, initSVG, transformSVG, diffPoints } from './implementation/index.js';
-import { initGUIRange, waveConfig , gridConfig } from './implementation/GUI/index.js';
+import diffContext, { 
+    ENUMS, 
+    userConfigs, 
+    initSVG, 
+    transformSVG, 
+    setGUIAction 
+} from './implementation/index.js';
+import { initGUIRange, gridConfig } from './implementation/GUI/index.js';
 
 import package_json from './package.json' with { type: 'json' };
 
 const
-    { CASE, COLOR, SHAPE, UI_EVENTS } = ENUMS
+    { CASE, UI_EVENT } = ENUMS
     ,
     { setRange, Converters } = HTMLCanvas.Helpers.Trigonometry
     ;
 
-document.on(UI_EVENTS.DOMContentLoaded, ()=>{
+document.on(UI_EVENT.DOMContentLoaded, ()=>{
 
     document.title = package_json.name;
 
@@ -26,9 +32,9 @@ document.on(UI_EVENTS.DOMContentLoaded, ()=>{
         GUIRange 
             = initGUIRange({id: 'wave', container: stage.parentElement, position: 'right', draggable: true});
 
-    window.on(UI_EVENTS.resize, ()=>{
+    window.on(UI_EVENT.resize, ()=>{
 
-        GUIRange.grid.scale.element.on(UI_EVENTS.input, function(){
+        GUIRange.grid.scale.element.on(UI_EVENT.input, function(){
             
             // DEV_NOTE # technically, this is redundant, but consistency matters, thus overriding
             gridConfig.scale = Number( this.value ) ;
@@ -38,70 +44,21 @@ document.on(UI_EVENTS.DOMContentLoaded, ()=>{
             Object.assign( stage , { scale: gridConfig.scale } )
 
             HTMLCanvas
-            .init({stage})
-                .on((context)=>{
-
-                    // DEV_NOTE # because we mix HTML Canvas (CanvasRenderingContext2D) together with XML SVG, we must do the following check:..
-                    if ( context instanceof CanvasRenderingContext2D ) {
-                                                            
-                            switch (context.canvas.id) {
-            
-                                case CASE.grid :
-
-                                    if (
-                                        HTMLCanvas.Views.Grid.draw({
-                                            context, 
-                                            options: {
-                                                ...userConfigs.grid,
-                                                /**
-                                                 * @override
-                                                 */
-                                                strokeStyle: COLOR.blue
-                                            }}
-                                        )
-                                    ) {
-                                        transformSVG({HTMLCanvas, XMLSVG, parent: document.querySelector('svg-container')});
-                                    }
-
-                                break;
-
-                            }
-                    }
-                
-                });
+                .init({stage})
+                    .on(diffContext.bind(null, {HTMLCanvas, XMLSVG, transformSVG, userConfigs}));
 
 
-        }); GUIRange.grid.scale.element.dispatch( new Event(UI_EVENTS.input) );        
+        }); GUIRange.grid.scale.element.dispatch( new Event(UI_EVENT.input) ); 
 
-        Array.of(...[
-            GUIRange.wave.frequency, 
-            GUIRange.wave.amplitude, 
-            GUIRange.wave.periods
-        ])
-        .forEach(({ element })=>{
-
-            element.on(UI_EVENTS.input, function(){
-
-                waveConfig[element.name] = Number( this.value )
-                
-                document.querySelector(SHAPE.path).setPoints([
-                        ...diffPoints({
-                            Converters, 
-                            setRange,
-                            resource: { 
-                                name: SHAPE.smooth_wave, 
-                                waveConfig
-                            }
-                        })
-                    ]);
-
-            });
-
-        })
+        GUIRange.wave.all
+            .forEach(
+                setGUIAction[CASE.waveConfig].bind(null, { Converters, setRange })
+            )
+        ;
         
     })
 
     // DEV_NOTE (!) # This allows to initiate `<canvas>` hosted "bitmap" with internal context without waiting `window.onresize` to be triggered by end-user
-    window.dispatch(new Event(UI_EVENTS.resize));
+    window.dispatch(new Event(UI_EVENT.resize));
 
 });
