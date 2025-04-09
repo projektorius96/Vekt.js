@@ -1,36 +1,5 @@
 import { diffPoints, ENUM } from "./primitives.js";
-import { waveConfig, gridConfig } from './GUI/index.js'
-
-export default function({HTMLCanvas, XMLSVG, transformSVG, userConfigs}, context){
-    
-    // DEV_NOTE # because we mix HTML Canvas (CanvasRenderingContext2D) together with XML SVG, we must do the following check:..
-    if ( context instanceof CanvasRenderingContext2D ) {
-                                            
-            switch (context.canvas.id) {
-
-                case ENUMS.CASE.grid :
-
-                    if (
-                        HTMLCanvas.Views.Grid.draw({
-                            context, 
-                            options: {
-                                ...userConfigs.grid,
-                                /**
-                                 * @override
-                                 */
-                                strokeStyle: ENUMS.COLOR.blue
-                            }}
-                        )
-                    ) {
-                        transformSVG({HTMLCanvas, XMLSVG, parent: document.querySelector('svg-container')});
-                    }
-
-                break;
-
-            }
-    }
-
-}
+import { waveConfig, gridConfig } from './GUI/index.js';
 
 export {
     diffPoints
@@ -66,6 +35,65 @@ export
                 strokeStyle: ENUMS.COLOR.magenta,
                 opacity: 1 /* values := [0..1] */
             }
+        }
+        ;
+
+export default function({HTMLCanvas, XMLSVG, transformSVG, userConfigs}, context){
+    
+    // DEV_NOTE # because we mix HTML Canvas (CanvasRenderingContext2D) together with XML SVG, we must do the following check:..
+    if ( context instanceof CanvasRenderingContext2D ) {
+                                            
+            switch (context.canvas.id) {
+
+                case ENUMS.CASE.grid :
+
+                    if (
+                        HTMLCanvas.Views.Grid.draw({
+                            context, 
+                            options: {
+                                ...userConfigs.grid,
+                                /**
+                                 * @override
+                                 */
+                                strokeStyle: ENUMS.COLOR.blue
+                            }}
+                        )
+                    ) {
+                        transformSVG({HTMLCanvas, XMLSVG, parent: document.querySelector('svg-container')});
+                    }
+
+                break;
+
+            }
+    }
+
+}
+
+export 
+    const 
+        setGUIAction = {
+
+            [ENUMS.CASE.waveConfig]({Converters, setRange}, element){
+
+                element.on(ENUMS.UI_EVENTS.input, function(){
+    
+                    waveConfig[element.name] = Number( this.value )
+                    
+                    document.querySelector(ENUMS.SHAPE.path).setPoints([
+                            ...diffPoints({
+                                Converters, 
+                                setRange,
+                                resource: { 
+                                    name: ENUMS.SHAPE.smooth_wave, 
+                                    waveConfig
+                                }
+                            })
+                        ]);
+    
+                });
+    
+            }
+
         }
         ;
 
@@ -118,6 +146,7 @@ export
                 })
             );
         }
+        ;
 
 export 
     const 

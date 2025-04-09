@@ -1,5 +1,5 @@
 import { HTMLCanvas, XMLSVG } from './src/views/index.js';
-import diffContext, { ENUMS, userConfigs, initSVG, transformSVG, diffPoints } from './implementation/index.js';
+import diffContext, { ENUMS, userConfigs, initSVG, transformSVG, diffPoints, setGUIAction } from './implementation/index.js';
 import { initGUIRange, waveConfig , gridConfig } from './implementation/GUI/index.js';
 
 import package_json from './package.json' with { type: 'json' };
@@ -42,33 +42,13 @@ document.on(UI_EVENTS.DOMContentLoaded, ()=>{
                     .on(diffContext.bind(null, {HTMLCanvas, XMLSVG, transformSVG, userConfigs}));
 
 
-        }); GUIRange.grid.scale.element.dispatch( new Event(UI_EVENTS.input) );        
+        }); GUIRange.grid.scale.element.dispatch( new Event(UI_EVENTS.input) ); 
 
-        Array.of(...[
-            GUIRange.wave.frequency, 
-            GUIRange.wave.amplitude, 
-            GUIRange.wave.periods
-        ])
-        .forEach(({ element })=>{
-
-            element.on(UI_EVENTS.input, function(){
-
-                waveConfig[element.name] = Number( this.value )
-                
-                document.querySelector(SHAPE.path).setPoints([
-                        ...diffPoints({
-                            Converters, 
-                            setRange,
-                            resource: { 
-                                name: SHAPE.smooth_wave, 
-                                waveConfig
-                            }
-                        })
-                    ]);
-
-            });
-
-        })
+        GUIRange.wave.all
+            .forEach(
+                setGUIAction[CASE.waveConfig].bind(null, { Converters, setRange })
+            )
+        ;
         
     })
 

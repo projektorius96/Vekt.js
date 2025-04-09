@@ -128,6 +128,11 @@ export
                         element: gui.find({name: periods.text})
                     }
                     ,
+                    all: [
+                        gui.find({name: frequency.text}),
+                        gui.find({name: amplitude.text}),
+                        gui.find({name: periods.text})
+                    ]
                 }
             })
         
