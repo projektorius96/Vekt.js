@@ -12,7 +12,7 @@ export
             ,
             SHAPE : ENUM
             ,
-            UI_EVENTS : ENUM
+            UI_EVENT : ENUM
             ,
             CASE : ENUM
         }
@@ -75,7 +75,7 @@ export
 
             [ENUMS.CASE.waveConfig]({Converters, setRange}, element){
 
-                element.on(ENUMS.UI_EVENTS.input, function(){
+                element.on(ENUMS.UI_EVENT.input, function(){
     
                     waveConfig[element.name] = Number( this.value )
                     
@@ -197,7 +197,7 @@ export
             
                                     shape.setAttribute("transform", currentMatrix().toString());
             
-                                    shape.addEventListener(ENUMS.UI_EVENTS.click, (e) => {
+                                    shape.addEventListener(ENUMS.UI_EVENT.click, (e) => {
                                         XMLSVG.enableDraggingFor(e.currentTarget, currentMatrix.bind(null))
                                     });
                                     
@@ -205,7 +205,7 @@ export
                             break;
                         }
 
-                        shape.addEventListener(ENUMS.UI_EVENTS.click, (e)=>{
+                        shape.addEventListener(ENUMS.UI_EVENT.click, (e)=>{
                             if ( shape.tagName !== ENUMS.SHAPE.path ) XMLSVG.enableDraggingFor(e.currentTarget) ;
                         });
 

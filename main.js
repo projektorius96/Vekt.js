@@ -1,16 +1,22 @@
 import { HTMLCanvas, XMLSVG } from './src/views/index.js';
-import diffContext, { ENUMS, userConfigs, initSVG, transformSVG, diffPoints, setGUIAction } from './implementation/index.js';
-import { initGUIRange, waveConfig , gridConfig } from './implementation/GUI/index.js';
+import diffContext, { 
+    ENUMS, 
+    userConfigs, 
+    initSVG, 
+    transformSVG, 
+    setGUIAction 
+} from './implementation/index.js';
+import { initGUIRange, gridConfig } from './implementation/GUI/index.js';
 
 import package_json from './package.json' with { type: 'json' };
 
 const
-    { CASE, COLOR, SHAPE, UI_EVENTS } = ENUMS
+    { CASE, UI_EVENT } = ENUMS
     ,
     { setRange, Converters } = HTMLCanvas.Helpers.Trigonometry
     ;
 
-document.on(UI_EVENTS.DOMContentLoaded, ()=>{
+document.on(UI_EVENT.DOMContentLoaded, ()=>{
 
     document.title = package_json.name;
 
@@ -26,9 +32,9 @@ document.on(UI_EVENTS.DOMContentLoaded, ()=>{
         GUIRange 
             = initGUIRange({id: 'wave', container: stage.parentElement, position: 'right', draggable: true});
 
-    window.on(UI_EVENTS.resize, ()=>{
+    window.on(UI_EVENT.resize, ()=>{
 
-        GUIRange.grid.scale.element.on(UI_EVENTS.input, function(){
+        GUIRange.grid.scale.element.on(UI_EVENT.input, function(){
             
             // DEV_NOTE # technically, this is redundant, but consistency matters, thus overriding
             gridConfig.scale = Number( this.value ) ;
@@ -42,7 +48,7 @@ document.on(UI_EVENTS.DOMContentLoaded, ()=>{
                     .on(diffContext.bind(null, {HTMLCanvas, XMLSVG, transformSVG, userConfigs}));
 
 
-        }); GUIRange.grid.scale.element.dispatch( new Event(UI_EVENTS.input) ); 
+        }); GUIRange.grid.scale.element.dispatch( new Event(UI_EVENT.input) ); 
 
         GUIRange.wave.all
             .forEach(
@@ -53,6 +59,6 @@ document.on(UI_EVENTS.DOMContentLoaded, ()=>{
     })
 
     // DEV_NOTE (!) # This allows to initiate `<canvas>` hosted "bitmap" with internal context without waiting `window.onresize` to be triggered by end-user
-    window.dispatch(new Event(UI_EVENTS.resize));
+    window.dispatch(new Event(UI_EVENT.resize));
 
 });
