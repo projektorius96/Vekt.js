@@ -75,7 +75,7 @@ export
                     )
                 ]);
 
-                // DEV_NOTE # we must init above as the below depends on above, thus a separate `append` call
+                // DEV_NOTE # we must init above as the below depends on above, thus a separated `Node.prototype.append` call
                 gui.find(wave).children.slot1.append(...[
                     ...Array(
                         periods,
@@ -84,7 +84,7 @@ export
                             attrs: {
                                 min: 0,
                                 max: 1,
-                                /* DEV_NOTE # this configuration of ever-growing stroked wave view, is a true hidden gem !!!  */
+                                /* DEV_NOTE # this configuration of ever-growing stroked wave view, is truly a hidden gem !  */
                                 step: (1 / Number( gui.find({name: frequency.text}).max )),
                                 value: waveConfig.periods
                             }

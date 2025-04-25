@@ -1,5 +1,14 @@
 # Project name: **Vekt.js**
 
+### Annotations
+
+> The annotations you may have stumbled upon by examining the source code...
+
+```diff
+DEV_NOTE # ... : a note left by developer
+DEV_NOTE (!) # ... : the IMPORTANT note left by developer
+```
+
 ### Table of contents
 
 _Coming soon..._

@@ -45,7 +45,7 @@ document.on(UI_EVENT.DOMContentLoaded, ()=>{
 
             HTMLCanvas
                 .init({stage})
-                    .on(diffContext.bind(null, {HTMLCanvas, XMLSVG, transformSVG, userConfigs}));
+                    .on( diffContext.bind(null, {HTMLCanvas, XMLSVG, transformSVG, userConfigs}) );
 
 
         }); GUIRange.grid.scale.element.dispatch( new Event(UI_EVENT.input) ); 
@@ -59,6 +59,6 @@ document.on(UI_EVENT.DOMContentLoaded, ()=>{
     })
 
     // DEV_NOTE (!) # This allows to initiate `<canvas>` hosted "bitmap" with internal context without waiting `window.onresize` to be triggered by end-user
-    window.dispatch(new Event(UI_EVENT.resize));
+    window.dispatch( new Event(UI_EVENT.resize) );
 
 });
