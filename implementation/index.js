@@ -1,8 +1,39 @@
 import { diffPoints, ENUM } from "./primitives.js";
 import { waveConfig, gridConfig } from './GUI/index.js';
 
-export {
-    diffPoints
+export default function diffContext({HTMLCanvas, XMLSVG, transformSVG, userConfigs}, context){
+    
+    // DEV_NOTE # because we mix HTML Canvas (i.e. CanvasRenderingContext2D) together with XML SVG (i.e. SVG), we must do the following check:..
+    if ( context instanceof CanvasRenderingContext2D ) {
+                                            
+            switch (context.canvas.id) {
+
+                case ENUMS.CASE.grid :
+
+                    (
+                        HTMLCanvas.Views.Grid.draw({
+                            context, 
+                            options: {
+                                ...userConfigs.grid,
+                                /**
+                                 * @override
+                                 */
+                                strokeStyle: ENUMS.COLOR.blue
+                            }}
+                    )
+                    ) ?
+                    ( 
+                        transformSVG({HTMLCanvas, XMLSVG, parent: document.querySelector('svg-container')}) 
+                    ) :
+                    (
+                        false
+                    ) ;
+
+                break;
+
+            }
+    }
+
 }
 
 export 
@@ -37,37 +68,6 @@ export
             }
         }
         ;
-
-export default function({HTMLCanvas, XMLSVG, transformSVG, userConfigs}, context){
-    
-    // DEV_NOTE # because we mix HTML Canvas (CanvasRenderingContext2D) together with XML SVG, we must do the following check:..
-    if ( context instanceof CanvasRenderingContext2D ) {
-                                            
-            switch (context.canvas.id) {
-
-                case ENUMS.CASE.grid :
-
-                    if (
-                        HTMLCanvas.Views.Grid.draw({
-                            context, 
-                            options: {
-                                ...userConfigs.grid,
-                                /**
-                                 * @override
-                                 */
-                                strokeStyle: ENUMS.COLOR.blue
-                            }}
-                        )
-                    ) {
-                        transformSVG({HTMLCanvas, XMLSVG, parent: document.querySelector('svg-container')});
-                    }
-
-                break;
-
-            }
-    }
-
-}
 
 export 
     const 
@@ -214,3 +214,7 @@ export
                 }
 
         }
+
+export {
+    diffPoints
+}
