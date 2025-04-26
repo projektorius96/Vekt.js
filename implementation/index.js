@@ -3,7 +3,7 @@ import { waveConfig, gridConfig } from './GUI/index.js';
 
 export default function diffContext({HTMLCanvas, XMLSVG, transformSVG, userConfigs}, context){
     
-    // DEV_NOTE # because we mix HTML Canvas (i.e. CanvasRenderingContext2D) together with XML SVG (i.e. SVG), we must do the following check:..
+    // DEV_NOTE # because we mix HTML Canvas (i.e. Canvas API) together with XML SVG (i.e. SVG) web technologies, we must do the following check:..
     if ( context instanceof CanvasRenderingContext2D ) {
                                             
             switch (context.canvas.id) {
@@ -23,7 +23,7 @@ export default function diffContext({HTMLCanvas, XMLSVG, transformSVG, userConfi
                     )
                     ) ?
                     ( 
-                        transformSVG({HTMLCanvas, XMLSVG, parent: document.querySelector('svg-container')}) 
+                        transformSVG({ HTMLCanvas, XMLSVG, parent: document.querySelector('svg-container') }) 
                     ) :
                     (
                         false
@@ -102,12 +102,15 @@ export
         initSVG = ({XMLSVG, HTMLCanvas}) => {
 
             const
-                { Converters, setRange } = HTMLCanvas.Helpers.Trigonometry;
+                { Converters, setRange } = HTMLCanvas.Helpers.Trigonometry
+                ,
+                underscoreToHyphen = ["_", "-"]
+                ;
                 
             return (
                 new XMLSVG.ViewGroup.Container({
                     options: {
-                        id: ENUM.svg_container.replace("_", "-"),
+                        id: ENUM.svg_container.replace(...underscoreToHyphen),
                         global: {
                             scalingFactor: 2
                         }
@@ -115,7 +118,7 @@ export
                     childrenList: [
                         new XMLSVG.Views.Circle({
                             options: {
-                                id: ENUM.svg_circle.replace("_", "-"),
+                                id: ENUM.svg_circle.replace(...underscoreToHyphen),
                                 hidden: !true,
                                 fill: ENUMS.COLOR.black,
                                 radius: 150,
@@ -125,8 +128,9 @@ export
                         }),
                         new XMLSVG.Views.Path({
                             options: {
-                                id: ENUM.svg_path.replace("_", "-"),
+                                id: ENUM.svg_path.replace(...underscoreToHyphen),
                                 hidden: !true,
+                                dashed: 0.1/* herein: dashed := [0.1..1.0]; to disable, pass either := 0|false */,
                                 points: [
                                     ...diffPoints({
                                         Converters, 
