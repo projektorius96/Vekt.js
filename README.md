@@ -1,5 +1,7 @@
 # Project name: **Vekt.js**
 
+> See current list of demos on [YouTube](https://www.youtube.com/playlist?list=PL7JUsQnnxGCu1aze5meX8gP_K50ZcM9kC)
+
 ### Annotations
 
 > The annotations you may have stumbled upon by examining the source code...
@@ -11,13 +13,13 @@ DEV_NOTE (!) # ... : the IMPORTANT note left by developer
 
 ### Table of contents
 
-_Coming soon..._
+> _Coming soon..._
 
 ### Development environment
 
 > **PREREQUISITES**:
 
-- Make sure you have [this GUI dependency](https://github.com/projektorius96/wc-pane) ["npm-linked"](https://docs.npmjs.com/cli/v9/commands/npm-link?v=true#synopsis) locally under `./node_modules/` of this project !
+- Make sure you have [this GUI dependency](https://github.com/projektorius96/wc-pane) ["npm-linked"](https://docs.npmjs.com/cli/v9/commands/npm-link?v=true#synopsis) locally under `./node_modules/` !
 
 #### Implementations
 
