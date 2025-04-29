@@ -1,4 +1,4 @@
-import { getNamespace } from "../TMP_DIR/modules/index.js";
+import { getNamespace } from "../modules/index.js";
 
 export const svg_circle = getNamespace(import.meta.url);
 customElements.define(svg_circle, class extends HTMLElement {
