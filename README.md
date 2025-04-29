@@ -4,7 +4,7 @@
 
 ### Annotations
 
-> The annotations you may have stumbled upon by examining the source code...
+> The annotations you may have stumbled upon by examining the source code itself...
 
 ```diff
 DEV_NOTE # ... : a note left by developer
@@ -19,7 +19,8 @@ DEV_NOTE (!) # ... : the IMPORTANT note left by developer
 
 > **PREREQUISITES**:
 
-- Make sure you have [this GUI dependency](https://github.com/projektorius96/wc-pane) ["npm-linked"](https://docs.npmjs.com/cli/v9/commands/npm-link?v=true#synopsis) locally under `./node_modules/` !
+1) Make sure you got the latest `Node.js` and `npm` on your machine, as well as latest stable version of `Vite.js` installed upon;
+2) Make sure you have [this GUI dependency](https://github.com/projektorius96/wc-pane) ["npm-linked"](https://docs.npmjs.com/cli/v9/commands/npm-link?v=true#synopsis) locally under `./node_modules/` !
 
 #### Implementations
 

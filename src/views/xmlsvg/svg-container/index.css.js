@@ -4,12 +4,9 @@
 export default function () {
 
     /**
-     * @type
-     * 
-     * > **NOTE**: herein we're arbitrary accruing each letter's position in Latin's alphabet
+     * @arbitrary
      */
-    let HOVER_ME;
-        const [S, V, G] = [19, 22, 7];
+    const [S, V, G] = [19, 22, 7];
 
     this.style.cssText = /* style */`
         width: calc(100vw - (100vw - 100%));

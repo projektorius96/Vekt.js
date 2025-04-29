@@ -1,9 +1,9 @@
 import './DOMutils.js';
 import { enableDraggingFor } from './modules/index.js';
 import { svg_container } from './svg-container/index.js';
-import { svg_circle } from './svg-circle/index.js';
-import { svg_rect } from './svg-rect/index.js';
 import { svg_path } from './svg-path/index.js';
+import { svg_rect } from './svg-rect/index.js';
+import { svg_circle } from './svg-circle/index.js';
 
 export class XMLSVG {
 
@@ -12,9 +12,9 @@ export class XMLSVG {
     }
 
     static Views = {
-        Circle: customElements.get(svg_circle),
-        Rect: customElements.get(svg_rect),
         Path: customElements.get(svg_path),
+        Rect: customElements.get(svg_rect),
+        Circle: customElements.get(svg_circle)
     }
 
     static Helpers = {
@@ -30,8 +30,7 @@ export class XMLSVG {
     static {
 
         Object.freeze(this.ViewGroup);
-            Object.freeze(this.Views);
-        
+        Object.freeze(this.Views);
         Object.freeze(this.Helpers);
 
     }
