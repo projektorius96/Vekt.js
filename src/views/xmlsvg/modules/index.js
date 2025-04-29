@@ -1,3 +1,28 @@
+/**
+ * @example
+ * 
+ * ENUM.give;  //  'give'
+ * ENUM.me;    //  'me'
+ * ENUM.value; //  'value'
+*/
+const 
+    ENUM = 
+    new Proxy( Object.create(null) , {
+        get(nil, key){
+            return (
+                key = `${key}`
+            );
+        }
+    })
+    ,
+    /**
+        * @alias
+    */
+    [SHAPE, ATTR, UI_EVENT] = Array(3).fill(ENUM);
+    ;
+
+export { ENUM }
+
 export function getNamespace(import_meta_url) {
 
     return (
@@ -6,6 +31,11 @@ export function getNamespace(import_meta_url) {
 
 }
 
+/**
+ * > NOTE: This function does set up `viewBox` attribute for an instance of `SVGElement` or other relevant interface(s)
+ * 
+ * @returns 
+ */
 export function setCoords() {
 
     const 
@@ -14,7 +44,7 @@ export function setCoords() {
         viewBox = svgElement.viewBox.baseVal
         ;
 
-        svgElement.setAttribute('viewBox', `${0} ${0} ${Math.ceil(window.innerWidth)} ${Math.ceil(window.innerHeight)}`)
+        svgElement.setAttribute(ATTR.viewBox, `${0} ${0} ${Math.ceil(window.innerWidth)} ${Math.ceil(window.innerHeight)}`)
         
     return ({
         getViewBox(){
@@ -22,6 +52,25 @@ export function setCoords() {
         }
     });
     
+}
+
+/**
+ * 
+ * @param {Array} points - list of points comprising a `path`, where such `path` is assigned to `SVGPathElement.attributes.d` internally;
+ * @returns {SVGPathElement.attributes.d} path
+ */
+export function setPoints(points = []) {
+    
+    if (points.length === 0) return "";
+        let path = `M 0 0`;
+            points.forEach((point, i) => {
+                if (i > 0){
+                    path += ` L ${point.x} ${point.y}`;
+                }
+            });
+    
+    return path;
+
 }
 
 /**
@@ -36,23 +85,24 @@ export function enableDraggingFor(currentTarget, currentMatrixFn){
     let targetElement = null;
     function mousemove(e){
 
-        switch (currentTarget.tagName) {
-            case 'circle':
+        switch ( currentTarget.tagName ) {
+            case SHAPE.path :
+                document.getElementById(currentTarget.id)
+                    .setAttribute( ATTR.transform , currentMatrixFn({x: e.pageX, y: e.pageY}).toString() );
+            break ;
+            case SHAPE.circle :
                 document.getElementById(currentTarget.id).setAttribute('cx', e.pageX)
                 document.getElementById(currentTarget.id).setAttribute('cy', e.pageY)
                 break;
-            case 'path':
-                document.getElementById(currentTarget.id).setAttribute("transform", currentMatrixFn({x: e.pageX, y: e.pageY}).toString());
-                break;
-            case 'rect':
+            case SHAPE.rect :
                 document.getElementById(currentTarget.id).setAttribute('x', e.pageX)
                 document.getElementById(currentTarget.id).setAttribute('y', e.pageY)
-                break;
+            break ;
         }
 
     }
     function mouseup(){
-        document.rm('mousemove', mousemove);
+        document.rm(UI_EVENT.mousemove, mousemove);
         targetElement = null;
     }
     function mousedown(e){
@@ -62,24 +112,10 @@ export function enableDraggingFor(currentTarget, currentMatrixFn){
         const { altKey } = e;
         if    ( altKey )   {
             e.preventDefault();
-            document.on('mousemove', mousemove);
+            document.on(UI_EVENT.mousemove, mousemove);
         } 
     }
-    currentTarget.on('mousedown', mousedown);
-    document.on('mouseup', mouseup);
-
-}
-
-export function setPoints(points = []) {
-    
-    if (points.length === 0) return "";
-        let path = `M 0 0`;
-            points.forEach((point, i) => {
-                if (i > 0){
-                    path += ` L ${point.x} ${point.y}`;
-                }
-            });
-    
-    return path;
+    currentTarget.on(UI_EVENT.mousedown, mousedown);
+    document.on(UI_EVENT.mouseup, mouseup);
 
 }
